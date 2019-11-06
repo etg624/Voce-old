@@ -1,0 +1,25 @@
+type Audio @model {
+  id: ID!
+  title: String!
+  file: S3Object
+}
+
+type S3Object {
+  bucket: String!
+  key: String!
+  region: String!
+}
+
+input S3ObjectInput {
+  bucket: String!
+  region: String!
+  localUri: String
+  key: String
+  mimeType: String
+}
+
+input CreateAudioInput {
+  id: ID
+  title: String!
+  file: S3ObjectInput
+}

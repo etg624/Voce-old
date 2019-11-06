@@ -1,0 +1,19 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "voce-dev-20191103211145-authRole",
+            "UnauthRoleArn": "arn:aws:iam::060605535278:role/voce-dev-20191103211145-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::060605535278:role/voce-dev-20191103211145-authRole",
+            "Region": "us-west-2",
+            "DeploymentBucketName": "voce-dev-20191103211145-deployment",
+            "UnauthRoleName": "voce-dev-20191103211145-unauthRole",
+            "StackName": "voce-dev-20191103211145",
+            "StackId": "arn:aws:cloudformation:us-west-2:060605535278:stack/voce-dev-20191103211145/997dc310-fec1-11e9-848f-0ab2e05eab74"
+        },
+        "categories": {
+            "auth": {
+                "voce4b8c9b0e": {}
+            }
+        }
+    }
+}
