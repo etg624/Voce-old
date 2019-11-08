@@ -3,6 +3,8 @@ import { Text, View, StyleSheet } from 'react-native';
 import { Audio } from 'expo-av';
 import { Storage } from 'aws-amplify';
 
+import Loading from '../../components/Loading';
+
 import RecordingsList from './components/RecordingsList';
 import EmptyRecordingList from './components/EmptyRecordingList';
 import { Context as RecordingContext } from '../../context/RecordingContext';
@@ -45,8 +47,8 @@ function RecordingsListScreen() {
   };
 
   return loading ? (
-    <View>
-      <Text>Loading..</Text>
+    <View style={styles.centerScreen}>
+      <Loading />
     </View>
   ) : recordings.length ? (
     <View style={styles.listContainer}>
@@ -57,7 +59,7 @@ function RecordingsListScreen() {
       />
     </View>
   ) : (
-    <View style={styles.noRecordingsContainer}>
+    <View style={styles.centerScreen}>
       <EmptyRecordingList />
     </View>
   );
@@ -70,7 +72,7 @@ const styles = StyleSheet.create({
   listContainer: {
     flex: 1
   },
-  noRecordingsContainer: {
+  centerScreen: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'

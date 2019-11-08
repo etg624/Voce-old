@@ -27,6 +27,7 @@ Storage.configure({
 });
 
 export default function RecordingScreen({ navigation }) {
+  const [hasAudioPermissions, setAudioPermissions] = useState(false);
   const {
     setIsRecording,
     setRecording,
@@ -34,8 +35,6 @@ export default function RecordingScreen({ navigation }) {
     postRecordingToS3AndDynamo,
     state: { isRecording, recording, playback }
   } = useContext(RecordingContext);
-
-  const [hasAudioPermissions, setAudioPermissions] = useState(false);
 
   const audioModeOptions = {
     allowsRecordingIOS: true,
