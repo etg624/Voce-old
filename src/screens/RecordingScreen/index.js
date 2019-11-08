@@ -1,11 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Audio } from 'expo-av';
 import * as Permissions from 'expo-permissions';
-import { View, StyleSheet, Text, Button } from 'react-native';
-import { Storage, Auth, API, graphqlOperation } from 'aws-amplify';
-import uuid from 'uuid';
+import { View, StyleSheet, Text } from 'react-native';
+import { Storage, Auth } from 'aws-amplify';
 
-import { createAudio } from '../../graphql/mutations';
 import config from '../../../aws-exports';
 import RecordButton from './components/RecordButton';
 import PlaybackForm from './components/PlaybackForm';
@@ -33,7 +31,7 @@ export default function RecordingScreen({ navigation }) {
     setIsRecording,
     setRecording,
     setPlayback,
-    postRecording,
+    postRecordingToS3AndDynamo,
     state: { isRecording, recording, playback }
   } = useContext(RecordingContext);
 
@@ -127,38 +125,11 @@ export default function RecordingScreen({ navigation }) {
   };
 
   const saveAndUnloadRecordedPlayback = async title => {
-    const localUri = recording._uri;
-    const uriParts = localUri.split('.');
-    const extension = uriParts[uriParts.length - 1];
-    const response = await fetch(localUri);
-    const blob = await response.blob();
-    const formattedFile = `${title.trim()}_${uuid()}.${extension}`;
-
-    // const url = `https://${config.aws_user_files_s3_bucket}.s3.${config.aws_user_files_s3_bucket_region}.amazonaws.com/public/${formattedFile}`;
-    Storage.put(formattedFile, blob, {
-      level: 'public',
-      contentType: `audio/x-${extension}`
-    })
-      .then(res => {
-        const { key } = res;
-        const audioDetails = {
-          title,
-          file: {
-            bucket,
-            region,
-            localUri,
-            key,
-            mimeType: `audio/x-${extension}`
-          }
-        };
-        postRecording(audioDetails);
-      })
-      .catch(err => console.log('STORAGE<ERROR>', err));
-
     setPlayback(null);
 
-    await playback.unloadAsync();
     navigation.navigate('RecordingsList');
+    await postRecordingToS3AndDynamo(title, recording);
+    await playback.unloadAsync();
   };
 
   return (
