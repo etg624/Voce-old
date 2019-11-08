@@ -4,14 +4,14 @@ import { Audio } from 'expo-av';
 import { Storage } from 'aws-amplify';
 
 import RecordingsList from './components/RecordingsList';
-
+import EmptyRecordingList from './components/EmptyRecordingList';
 import { Context as RecordingContext } from '../../context/RecordingContext';
 
 function RecordingsListScreen() {
   const {
     setPlayback,
     fetchRecordingsList,
-    state: { recordings, playback }
+    state: { recordings, playback, loading }
   } = useContext(RecordingContext);
 
   useEffect(() => {
@@ -44,7 +44,11 @@ function RecordingsListScreen() {
     }
   };
 
-  return recordings.length ? (
+  return loading ? (
+    <View>
+      <Text>Loading..</Text>
+    </View>
+  ) : recordings.length ? (
     <View style={styles.listContainer}>
       <RecordingsList
         onPlaybackPress={onPlaybackPress}
@@ -54,8 +58,7 @@ function RecordingsListScreen() {
     </View>
   ) : (
     <View style={styles.noRecordingsContainer}>
-      <Text style={styles.noRecordingsText}>😔</Text>
-      <Text style={styles.noRecordingsText}>No Recordings Yet</Text>
+      <EmptyRecordingList />
     </View>
   );
 }
@@ -71,9 +74,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
-  },
-  noRecordingsText: {
-    fontSize: 25
   }
 });
 export default RecordingsListScreen;
