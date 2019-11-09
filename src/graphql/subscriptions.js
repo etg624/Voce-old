@@ -5,6 +5,7 @@ export const onCreateAudio = `subscription OnCreateAudio {
   onCreateAudio {
     id
     title
+    durationInMillis
     file {
       bucket
       key
@@ -17,6 +18,7 @@ export const onUpdateAudio = `subscription OnUpdateAudio {
   onUpdateAudio {
     id
     title
+    durationInMillis
     file {
       bucket
       key
@@ -29,6 +31,7 @@ export const onDeleteAudio = `subscription OnDeleteAudio {
   onDeleteAudio {
     id
     title
+    durationInMillis
     file {
       bucket
       key

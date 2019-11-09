@@ -45,7 +45,7 @@ function RecordingsListScreen() {
       }
 
       if (playbackStatus.isBuffering) {
-        console.log(playbackStatus);
+        // console.log(playbackStatus);
       }
     }
   };

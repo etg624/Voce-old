@@ -5,6 +5,7 @@ export const createAudio = `mutation CreateAudio($input: CreateAudioInput!) {
   createAudio(input: $input) {
     id
     title
+    durationInMillis
     file {
       bucket
       key
@@ -17,6 +18,7 @@ export const updateAudio = `mutation UpdateAudio($input: UpdateAudioInput!) {
   updateAudio(input: $input) {
     id
     title
+    durationInMillis
     file {
       bucket
       key
@@ -29,6 +31,7 @@ export const deleteAudio = `mutation DeleteAudio($input: DeleteAudioInput!) {
   deleteAudio(input: $input) {
     id
     title
+    durationInMillis
     file {
       bucket
       key

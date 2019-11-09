@@ -7,7 +7,6 @@ import { postRecordingToDynamo, postRecordingToS3 } from './helpers/index';
 const initialState = {
   playback: null,
   seconds: 0,
-  playbackDuration: 0,
   isRecording: false,
   recording: null,
   recordings: [],
@@ -68,8 +67,10 @@ const postRecordingToS3AndDynamo = dispatch => {
       recording,
       'public'
     );
+    console.log(recording);
     const audioDetails = {
       title,
+      durationInMillis: recording._finalDurationMillis,
       file: {
         bucket,
         region,
@@ -78,11 +79,11 @@ const postRecordingToS3AndDynamo = dispatch => {
         mimeType: `audio/x-${extension}`
       }
     };
-
-    const newAudio = await postRecordingToDynamo(audioDetails);
+    const { data } = await postRecordingToDynamo(audioDetails);
+    console.log(data);
     dispatch({
       type: 'POST_RECORDING_TO_S3_AND_DYNAMO',
-      recording: newAudio.data.createAudio
+      recording: data.createAudio
     });
     dispatch(setLoading(false));
   };

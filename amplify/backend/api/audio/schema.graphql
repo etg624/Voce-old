@@ -1,6 +1,7 @@
 type Audio @model {
   id: ID!
   title: String!
+  durationInMillis: Int!
   file: S3Object
 }
 
@@ -21,5 +22,6 @@ input S3ObjectInput {
 input CreateAudioInput {
   id: ID
   title: String!
+  durationInMillis: Int!
   file: S3ObjectInput
 }
