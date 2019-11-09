@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-const EmptyRecordingList = ({ loading }) => {
+const EmptyRecordingList = () => {
   return (
     <>
       <Text style={styles.noRecordingsText}>😔</Text>

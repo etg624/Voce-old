@@ -6,6 +6,8 @@ import { listAudios } from '../graphql/queries';
 import { postRecordingToDynamo, postRecordingToS3 } from './helpers/index';
 const initialState = {
   playback: null,
+  seconds: 0,
+  playbackDuration: 0,
   isRecording: false,
   recording: null,
   recordings: [],
@@ -19,6 +21,8 @@ const {
 
 const recordingReducer = (state = initialState, action) => {
   switch (action.type) {
+    case 'UPDATE_PLAYBACK_SECONDS':
+      return { ...state, seconds: action.seconds };
     case 'SET_LOADING':
       return { ...state, loading: action.bool };
     case 'SET_IS_RECORDING':
@@ -42,6 +46,9 @@ const recordingReducer = (state = initialState, action) => {
   }
 };
 
+const updatePlaybackSeconds = dispatch => seconds =>
+  dispatch({ type: 'UPDATE_PLAYBACK_SECONDS', seconds });
+
 const setIsRecording = dispatch => bool =>
   dispatch({ type: 'SET_IS_RECORDING', bool });
 
@@ -50,7 +57,6 @@ const setRecording = dispatch => recording =>
 
 const setPlayback = dispatch => playback =>
   dispatch({ type: 'SET_PLAYBACK', playback });
-
 //this is to be used with other action creators that have dispatch attached to them
 const setLoading = bool => ({ type: 'SET_LOADING', bool });
 
@@ -104,7 +110,8 @@ export const { Context, Provider } = createContext(
     setRecording,
     setPlayback,
     postRecordingToS3AndDynamo,
-    fetchRecordingsList
+    fetchRecordingsList,
+    updatePlaybackSeconds
   },
   initialState
 );

@@ -13,7 +13,8 @@ function RecordingsListScreen() {
   const {
     setPlayback,
     fetchRecordingsList,
-    state: { recordings, playback, loading }
+    updatePlaybackSeconds,
+    state: { recordings, playback, loading, seconds }
   } = useContext(RecordingContext);
 
   useEffect(() => {
@@ -22,7 +23,9 @@ function RecordingsListScreen() {
 
   useEffect(() => {
     if (playback) {
+      playback.setOnPlaybackStatusUpdate(_onPlaybackStatusUpdate);
       return async () => {
+        // stops spamming on playback click
         const { isLoaded } = await playback.getStatusAsync();
         if (isLoaded) {
           await playback.unloadAsync();
@@ -31,11 +34,25 @@ function RecordingsListScreen() {
     }
   }, [playback]);
 
+  const _onPlaybackStatusUpdate = async playbackStatus => {
+    if (!playbackStatus.isLoaded) {
+    } else {
+      if (playbackStatus.isPlaying) {
+        const seconds = playbackStatus.positionMillis / 1000;
+        updatePlaybackSeconds(seconds);
+      } else {
+        //paused
+      }
+
+      if (playbackStatus.isBuffering) {
+        console.log(playbackStatus);
+      }
+    }
+  };
+
   const onPlaybackPress = async key => {
     try {
       const uri = await Storage.get(key, { level: 'public' });
-      // uri: 'http://www.hochmuth.com/mp3/Haydn_Cello_Concerto_D-1.mp3'
-
       const { sound } = await Audio.Sound.createAsync(
         { uri },
         { shouldPlay: true, position: 0, duration: 1 }
