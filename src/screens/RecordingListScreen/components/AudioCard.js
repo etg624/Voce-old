@@ -40,7 +40,7 @@ const AudioCard = ({ item, onPlaybackPress }) => {
 
           {/* Audio Progress  */}
 
-          <View>
+          <View style={styles.progress}>
             <AudioProgressBar
               progressPercentage={progressPercentage}
               duration={durationInSeconds}
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 5
   },
-  image: {},
+
   userInfo: {
     margin: 20
   },
@@ -93,6 +93,11 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontWeight: '500',
     fontSize: 20
+  },
+  progress: {
+    flex: 1,
+    marginTop: 10,
+    alignContent: 'flex-end'
   }
 });
 

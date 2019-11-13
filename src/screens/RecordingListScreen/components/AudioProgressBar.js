@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { View, StyleSheet, Animated } from 'react-native';
 
-const AudioProgressBar = ({ progressPercentage, duration, shouldUpdate }) => {
+const AudioProgressBar = ({ progressPercentage, shouldUpdate }) => {
   let animation = useRef(new Animated.Value(0));
 
   useEffect(() => {
