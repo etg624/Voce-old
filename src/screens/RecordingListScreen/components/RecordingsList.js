@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  FlatList,
-  Text,
-  StyleSheet,
-  View,
-  Image,
-  TouchableOpacity
-} from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 import { NavigationEvents } from 'react-navigation';
 
 import AudioCard from './AudioCard';

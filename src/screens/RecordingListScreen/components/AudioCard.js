@@ -4,8 +4,8 @@ import AudioProgressBar from '../components/AudioProgressBar';
 import { Context as RecordingContext } from '../../../context/RecordingContext';
 const AudioCard = ({ item, index, onPlaybackPress }) => {
   const {
+    setCurrentPlayback,
     state: {
-      recordings,
       playback,
       playback: { seconds }
     }
@@ -14,10 +14,9 @@ const AudioCard = ({ item, index, onPlaybackPress }) => {
     <TouchableOpacity
       style={styles.audioCard}
       onPress={() => {
-        console.log(playback.key);
-        recordings[index].file.key === item.file.key
-          ? onPlaybackPress(item.file.key)
-          : null;
+        onPlaybackPress(item.file.key, () => {
+          setCurrentPlayback(null);
+        });
       }}
     >
       <View style={styles.userInfo}>
@@ -34,7 +33,12 @@ const AudioCard = ({ item, index, onPlaybackPress }) => {
           </View>
           <View>
             <Text>
-              00:{playback.key === item.file.key ? seconds : <Text>00</Text>}
+              00:
+              {playback.key === item.file.key ? (
+                <Text>0{seconds}</Text>
+              ) : (
+                <Text>00</Text>
+              )}
             </Text>
           </View>
         </View>

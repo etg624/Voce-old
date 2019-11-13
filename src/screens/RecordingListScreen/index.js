@@ -1,10 +1,9 @@
 import React, { useContext, useEffect } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Audio } from 'expo-av';
 import { Storage } from 'aws-amplify';
 
 import Loading from '../../components/Loading';
-
 import RecordingsList from './components/RecordingsList';
 import EmptyRecordingList from './components/EmptyRecordingList';
 import { Context as RecordingContext } from '../../context/RecordingContext';
@@ -14,7 +13,7 @@ function RecordingsListScreen() {
     setCurrentPlayback,
     fetchRecordingsList,
     updatePlaybackSeconds,
-    state: { recordings, playback, loading, seconds }
+    state: { recordings, playback, loading }
   } = useContext(RecordingContext);
 
   useEffect(() => {
@@ -38,8 +37,7 @@ function RecordingsListScreen() {
     if (!playbackStatus.isLoaded) {
     } else {
       if (playbackStatus.isPlaying) {
-        const seconds = playbackStatus.positionMillis / 1000;
-        console.log(playback.key);
+        const seconds = Math.ceil(playbackStatus.positionMillis / 1000);
         updatePlaybackSeconds(playback.key, seconds);
       } else {
         //paused
@@ -50,19 +48,25 @@ function RecordingsListScreen() {
       }
 
       if (playbackStatus.didJustFinish && !playbackStatus.isLooping) {
-        updatePlaybackSeconds(playback.key, 0);
+        setTimeout(() => {
+          updatePlaybackSeconds(playback.key, 0);
+        }, 1000);
       }
     }
   };
-
-  const onPlaybackPress = async key => {
+  //This is passed down to the AudioCard component
+  const onPlaybackPress = async (key, callback) => {
     try {
       const uri = await Storage.get(key, { level: 'public' });
-      const { sound } = await Audio.Sound.createAsync(
-        { uri },
-        { shouldPlay: true, position: 0, duration: 1 }
-      );
+      const soundOptions = {
+        shouldPlay: true,
+        position: 0,
+        duration: 1,
+        progressUpdateIntervalMillis: 200
+      };
+      const { sound } = await Audio.Sound.createAsync({ uri }, soundOptions);
       setCurrentPlayback(sound, key);
+      return callback;
     } catch (e) {
       console.log(e);
     }
