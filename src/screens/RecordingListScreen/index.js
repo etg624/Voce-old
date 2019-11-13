@@ -37,7 +37,7 @@ function RecordingsListScreen() {
     if (!playbackStatus.isLoaded) {
     } else {
       if (playbackStatus.isPlaying) {
-        const seconds = Math.ceil(playbackStatus.positionMillis / 1000);
+        const seconds = Math.round(playbackStatus.positionMillis / 1000);
         updatePlaybackSeconds(playback.key, seconds);
       } else {
         //paused
@@ -62,7 +62,7 @@ function RecordingsListScreen() {
         shouldPlay: true,
         position: 0,
         duration: 1,
-        progressUpdateIntervalMillis: 200
+        progressUpdateIntervalMillis: 800
       };
       const { sound } = await Audio.Sound.createAsync({ uri }, soundOptions);
       setCurrentPlayback(sound, key);

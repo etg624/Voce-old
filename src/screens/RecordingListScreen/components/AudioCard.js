@@ -1,8 +1,11 @@
 import React, { useContext } from 'react';
 import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import AudioProgressBar from '../components/AudioProgressBar';
+
 import { Context as RecordingContext } from '../../../context/RecordingContext';
-const AudioCard = ({ item, index, onPlaybackPress }) => {
+
+import AudioProgressBar from './AudioProgressBar';
+import AudioProgressSeconds from './AudioProgressSeconds';
+const AudioCard = ({ item, onPlaybackPress }) => {
   const {
     setCurrentPlayback,
     state: {
@@ -10,6 +13,12 @@ const AudioCard = ({ item, index, onPlaybackPress }) => {
       playback: { seconds }
     }
   } = useContext(RecordingContext);
+
+  const durationInSeconds = Math.round(item.durationInMillis / 1000);
+  const progressPercentage = 100 * (seconds / durationInSeconds);
+
+  const shouldShowAudioProgressUpdate = playback.key === item.file.key;
+
   return (
     <TouchableOpacity
       style={styles.audioCard}
@@ -28,18 +37,20 @@ const AudioCard = ({ item, index, onPlaybackPress }) => {
         </View>
         <View>
           <Text style={styles.cardText}>{item.title}</Text>
+
+          {/* Audio Progress  */}
+
           <View>
-            <AudioProgressBar progress={seconds} />
-          </View>
-          <View>
-            <Text>
-              00:
-              {playback.key === item.file.key ? (
-                <Text>0{seconds}</Text>
-              ) : (
-                <Text>00</Text>
-              )}
-            </Text>
+            <AudioProgressBar
+              progressPercent={progressPercentage}
+              duration={durationInSeconds}
+              shouldShowAudioProgressUpdate={shouldShowAudioProgressUpdate}
+            />
+            <AudioProgressSeconds
+              duration={durationInSeconds}
+              seconds={seconds}
+              shouldShowAudioProgressUpdate={shouldShowAudioProgressUpdate}
+            />
           </View>
         </View>
       </View>
