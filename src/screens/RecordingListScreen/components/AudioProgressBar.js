@@ -1,13 +1,13 @@
 import React, { useRef, useEffect } from 'react';
 import { View, StyleSheet, Animated } from 'react-native';
 
-const AudioProgressBar = ({ progressPercentage, duration }) => {
+const AudioProgressBar = ({ progressPercentage, duration, shouldUpdate }) => {
   let animation = useRef(new Animated.Value(0));
 
   useEffect(() => {
     Animated.timing(animation.current, {
       toValue: progressPercentage,
-      duration: duration
+      duration: 750
     }).start();
   }, [progressPercentage]);
 
@@ -16,15 +16,16 @@ const AudioProgressBar = ({ progressPercentage, duration }) => {
     outputRange: ['0%', '100%'],
     extrapolate: 'clamp'
   });
-
   return (
     <View style={styles.container}>
       <View style={styles.bar}>
-        <Animated.View
-          style={
-            ([StyleSheet.absoluteFill], { backgroundColor: 'black', width })
-          }
-        />
+        {shouldUpdate ? (
+          <Animated.View
+            style={
+              ([StyleSheet.absoluteFill], { backgroundColor: 'black', width })
+            }
+          />
+        ) : null}
       </View>
     </View>
   );
@@ -37,15 +38,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#ecf0f1',
-    padding: 8
+    padding: 3
   },
 
   bar: {
-    height: 10,
-    borderColor: '#000',
+    flexDirection: 'row',
     width: '100%',
-    borderWidth: 2,
-    borderRadius: 4
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0
   }
 });
 

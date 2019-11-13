@@ -42,9 +42,9 @@ const AudioCard = ({ item, onPlaybackPress }) => {
 
           <View>
             <AudioProgressBar
-              progressPercent={progressPercentage}
+              progressPercentage={progressPercentage}
               duration={durationInSeconds}
-              shouldShowAudioProgressUpdate={shouldShowAudioProgressUpdate}
+              shouldUpdate={shouldShowAudioProgressUpdate}
             />
             <AudioProgressSeconds
               duration={durationInSeconds}

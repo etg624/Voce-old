@@ -62,7 +62,7 @@ function RecordingsListScreen() {
         shouldPlay: true,
         position: 0,
         duration: 1,
-        progressUpdateIntervalMillis: 800
+        progressUpdateIntervalMillis: 100
       };
       const { sound } = await Audio.Sound.createAsync({ uri }, soundOptions);
       setCurrentPlayback(sound, key);
