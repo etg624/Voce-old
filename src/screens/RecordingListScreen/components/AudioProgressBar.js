@@ -7,7 +7,7 @@ const AudioProgressBar = ({ progressPercentage, duration, shouldUpdate }) => {
   useEffect(() => {
     Animated.timing(animation.current, {
       toValue: progressPercentage,
-      duration: 750
+      duration: 1000
     }).start();
   }, [progressPercentage]);
 
