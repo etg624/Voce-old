@@ -11,7 +11,7 @@ import { Context as RecordingContext } from '../../context/RecordingContext';
 
 function RecordingsListScreen() {
   const {
-    setPlayback,
+    setCurrentPlayback,
     fetchRecordingsList,
     updatePlaybackSeconds,
     state: { recordings, playback, loading, seconds }
@@ -22,30 +22,35 @@ function RecordingsListScreen() {
   }, []);
 
   useEffect(() => {
-    if (playback) {
-      playback.setOnPlaybackStatusUpdate(_onPlaybackStatusUpdate);
+    if (playback.sound) {
+      playback.sound.setOnPlaybackStatusUpdate(_onPlaybackStatusUpdate);
       return async () => {
         // stops spamming on playback click
-        const { isLoaded } = await playback.getStatusAsync();
+        const { isLoaded } = await playback.sound.getStatusAsync();
         if (isLoaded) {
-          await playback.unloadAsync();
+          await playback.sound.unloadAsync();
         }
       };
     }
-  }, [playback]);
+  }, [playback.sound]);
 
   const _onPlaybackStatusUpdate = async playbackStatus => {
     if (!playbackStatus.isLoaded) {
     } else {
       if (playbackStatus.isPlaying) {
         const seconds = playbackStatus.positionMillis / 1000;
-        updatePlaybackSeconds(seconds);
+        console.log(playback.key);
+        updatePlaybackSeconds(playback.key, seconds);
       } else {
         //paused
       }
 
       if (playbackStatus.isBuffering) {
         // console.log(playbackStatus);
+      }
+
+      if (playbackStatus.didJustFinish && !playbackStatus.isLooping) {
+        updatePlaybackSeconds(playback.key, 0);
       }
     }
   };
@@ -57,7 +62,7 @@ function RecordingsListScreen() {
         { uri },
         { shouldPlay: true, position: 0, duration: 1 }
       );
-      setPlayback(sound);
+      setCurrentPlayback(sound, key);
     } catch (e) {
       console.log(e);
     }
@@ -72,7 +77,7 @@ function RecordingsListScreen() {
       <RecordingsList
         onPlaybackPress={onPlaybackPress}
         recordings={recordings}
-        setPlayback={setPlayback}
+        setCurrentPlayback={setCurrentPlayback}
       />
     </View>
   ) : (

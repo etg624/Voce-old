@@ -9,33 +9,26 @@ import {
 } from 'react-native';
 import { NavigationEvents } from 'react-navigation';
 
-const RecordingsList = ({ onPlaybackPress, recordings, setPlayback }) => {
+import AudioCard from './AudioCard';
+
+const RecordingsList = ({
+  onPlaybackPress,
+  recordings,
+  setCurrentPlayback
+}) => {
   return (
     <>
-      <NavigationEvents onDidBlur={() => setPlayback(null)} />
+      <NavigationEvents onDidBlur={() => setCurrentPlayback(null)} />
       <FlatList
         keyExtractor={(item, index) => index.toString()}
         data={recordings}
-        renderItem={({ item }) => {
+        renderItem={({ item, index }) => {
           return (
-            <TouchableOpacity
-              style={styles.audioCard}
-              onPress={() => {
-                onPlaybackPress(item.file.key);
-              }}
-            >
-              <View style={styles.userInfo}>
-                <View style={styles.imageContainer}>
-                  <Image
-                    style={styles.image}
-                    source={require('../../../assets/images/speakingGuy.png')}
-                  />
-                </View>
-                <View>
-                  <Text style={styles.cardText}>{item.title}</Text>
-                </View>
-              </View>
-            </TouchableOpacity>
+            <AudioCard
+              item={item}
+              index={index}
+              onPlaybackPress={onPlaybackPress}
+            />
           );
         }}
       />

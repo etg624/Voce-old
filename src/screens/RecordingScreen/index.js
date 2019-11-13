@@ -31,7 +31,7 @@ export default function RecordingScreen({ navigation }) {
   const {
     setIsRecording,
     setRecording,
-    setPlayback,
+    setCurrentPlayback,
     postRecordingToS3AndDynamo,
     state: { isRecording, recording, playback }
   } = useContext(RecordingContext);
@@ -107,7 +107,7 @@ export default function RecordingScreen({ navigation }) {
       volume: 1
     });
 
-    setPlayback(sound);
+    setCurrentPlayback(sound);
     setIsRecording(false);
   };
 
@@ -117,28 +117,29 @@ export default function RecordingScreen({ navigation }) {
       allowsRecordingIOS: false
     });
     try {
-      (await playback.playAsync()) || (await playback.replayAsync());
+      (await playback.sound.playAsync()) ||
+        (await playback.sound.replayAsync());
     } catch (error) {
       console.log(error);
     }
   };
 
   const saveAndUnloadRecordedPlayback = async title => {
-    setPlayback(null);
+    setCurrentPlayback(null);
     navigation.navigate('RecordingsList');
     await postRecordingToS3AndDynamo(title, recording);
-    await playback.unloadAsync();
+    await playback.sound.unloadAsync();
   };
 
   return (
     <View
       style={
-        !playback
+        !playback.sound
           ? styles.mainContainer
           : { ...styles.mainContainer, justifyContent: 'center' }
       }
     >
-      {playback ? (
+      {playback.sound ? (
         <View style={styles.form}>
           <PlaybackForm
             startPlayback={startRecordedPlayBack}

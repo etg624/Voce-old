@@ -5,7 +5,7 @@ import { listAudios } from '../graphql/queries';
 
 import { postRecordingToDynamo, postRecordingToS3 } from './helpers/index';
 const initialState = {
-  playback: null,
+  playback: { sound: null, seconds: 0, key: '' },
   seconds: 0,
   isRecording: false,
   recording: null,
@@ -21,15 +21,24 @@ const {
 const recordingReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'UPDATE_PLAYBACK_SECONDS':
-      return { ...state, seconds: action.seconds };
+      return {
+        ...state,
+        playback: {
+          ...state.playback,
+          seconds: action.key === state.playback.key ? action.seconds : 0
+        }
+      };
     case 'SET_LOADING':
       return { ...state, loading: action.bool };
     case 'SET_IS_RECORDING':
       return { ...state, isRecording: action.bool };
     case 'SET_RECORDING':
       return { ...state, recording: action.recording };
-    case 'SET_PLAYBACK':
-      return { ...state, playback: action.playback };
+    case 'SET_CURRENT_PLAYBACK':
+      return {
+        ...state,
+        playback: { ...state.playback, sound: action.sound, key: action.key }
+      };
     case 'POST_RECORDING_TO_S3_AND_DYNAMO':
       return {
         ...state,
@@ -45,8 +54,8 @@ const recordingReducer = (state = initialState, action) => {
   }
 };
 
-const updatePlaybackSeconds = dispatch => seconds =>
-  dispatch({ type: 'UPDATE_PLAYBACK_SECONDS', seconds });
+const updatePlaybackSeconds = dispatch => (key, seconds) =>
+  dispatch({ type: 'UPDATE_PLAYBACK_SECONDS', seconds, key });
 
 const setIsRecording = dispatch => bool =>
   dispatch({ type: 'SET_IS_RECORDING', bool });
@@ -54,8 +63,8 @@ const setIsRecording = dispatch => bool =>
 const setRecording = dispatch => recording =>
   dispatch({ type: 'SET_RECORDING', recording });
 
-const setPlayback = dispatch => playback =>
-  dispatch({ type: 'SET_PLAYBACK', playback });
+const setCurrentPlayback = dispatch => (sound, key) =>
+  dispatch({ type: 'SET_CURRENT_PLAYBACK', sound, key });
 //this is to be used with other action creators that have dispatch attached to them
 const setLoading = bool => ({ type: 'SET_LOADING', bool });
 
@@ -67,7 +76,6 @@ const postRecordingToS3AndDynamo = dispatch => {
       recording,
       'public'
     );
-    console.log(recording);
     const audioDetails = {
       title,
       durationInMillis: recording._finalDurationMillis,
@@ -80,7 +88,6 @@ const postRecordingToS3AndDynamo = dispatch => {
       }
     };
     const { data } = await postRecordingToDynamo(audioDetails);
-    console.log(data);
     dispatch({
       type: 'POST_RECORDING_TO_S3_AND_DYNAMO',
       recording: data.createAudio
@@ -109,7 +116,7 @@ export const { Context, Provider } = createContext(
   {
     setIsRecording,
     setRecording,
-    setPlayback,
+    setCurrentPlayback,
     postRecordingToS3AndDynamo,
     fetchRecordingsList,
     updatePlaybackSeconds
