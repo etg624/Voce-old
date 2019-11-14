@@ -6,7 +6,7 @@ import { Storage } from 'aws-amplify';
 import Loading from '../../components/Loading';
 import RecordingsList from './components/RecordingsList';
 import EmptyRecordingList from './components/EmptyRecordingList';
-import { Context as RecordingContext } from '../../context/RecordingContext';
+import { Context as RecordingContext } from '../../context/recordingContex/RecordingContext';
 
 function RecordingsListScreen() {
   const {

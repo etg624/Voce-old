@@ -1,9 +1,11 @@
-import createContext from './createContext';
 import { API, graphqlOperation } from 'aws-amplify';
-import config from '../../aws-exports';
-import { listAudios } from '../graphql/queries';
 
+import config from '../../../aws-exports';
+import { listAudios } from '../../graphql/queries';
+
+import createContext from '../createContext';
 import { postRecordingToDynamo, postRecordingToS3 } from './helpers/index';
+
 const initialState = {
   playback: { sound: null, seconds: 0, key: '' },
   seconds: 0,

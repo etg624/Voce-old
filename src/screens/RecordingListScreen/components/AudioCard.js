@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
 import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Auth } from 'aws-amplify';
 
-import { Context as RecordingContext } from '../../../context/RecordingContext';
+import { Context as RecordingContext } from '../../../context/recordingContex/RecordingContext';
 
 import AudioProgressBar from './AudioProgressBar';
 import AudioProgressSeconds from './AudioProgressSeconds';
@@ -37,6 +38,7 @@ const AudioCard = ({ item, onPlaybackPress }) => {
         </View>
         <View>
           <Text style={styles.cardText}>{item.title}</Text>
+          <Text>Recorded By: {Auth.currentUserInfo().name}</Text>
 
           {/* Audio Progress  */}
 
