@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Auth } from 'aws-amplify';
 
-import { Context as RecordingContext } from '../../../context/recordingContex/RecordingContext';
+import { Context as RecordingContext } from '../../../context/recordingContext/RecordingContext';
 
 import AudioProgressBar from './AudioProgressBar';
 import AudioProgressSeconds from './AudioProgressSeconds';

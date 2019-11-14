@@ -1,6 +1,6 @@
 import React from 'react';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
-import { Provider } from '../context/recordingContex/RecordingContext';
+import { Provider } from '../context/recordingContext/RecordingContext';
 import MainTabNavigator from './MainTabNavigator';
 
 const App = createAppContainer(

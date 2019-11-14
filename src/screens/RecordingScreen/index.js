@@ -7,7 +7,7 @@ import { Storage, Auth } from 'aws-amplify';
 import config from '../../../aws-exports';
 import RecordButton from './components/RecordButton';
 import PlaybackForm from './components/PlaybackForm';
-import { Context as RecordingContext } from '../../context/recordingContex/RecordingContext';
+import { Context as RecordingContext } from '../../context/recordingContext/RecordingContext';
 
 const {
   aws_user_files_s3_bucket_region: region,
