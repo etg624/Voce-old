@@ -1,6 +1,7 @@
 import React from 'react';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
-import { Provider } from '../context/recordingContext/RecordingContext';
+import { Provider as RecordingProvider } from '../context/recordingContext/recordingContext';
+import { Provider as UserProvider } from '../context/userContext/userContext';
 import MainTabNavigator from './MainTabNavigator';
 
 const App = createAppContainer(
@@ -12,7 +13,9 @@ const App = createAppContainer(
 );
 
 export default () => (
-  <Provider>
-    <App />
-  </Provider>
+  <UserProvider>
+    <RecordingProvider>
+      <App />
+    </RecordingProvider>
+  </UserProvider>
 );
