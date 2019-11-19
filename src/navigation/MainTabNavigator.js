@@ -6,7 +6,6 @@ import {
 } from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
-// import HomeScreen from '../screens/HomeScreen';
 import RecordingScreen from '../screens/RecordingScreen/index';
 import RecordingsListScreen from '../screens/RecordingListScreen/index';
 
@@ -54,30 +53,9 @@ RecordingsListStack.navigationOptions = {
 
 RecordingsListStack.path = '';
 
-/*------Settings Screen------*/
-
-// const SettingsStack = createStackNavigator(
-//   {
-//     Settings: SettingsScreen
-//   },
-//   config
-// );
-
-// SettingsStack.navigationOptions = {
-//   tabBarLabel: 'Settings',
-//   tabBarIcon: ({ focused }) => (
-//     <TabBarIcon
-//       focused={focused}
-//       name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
-//     />
-//   )
-// };
-
-// SettingsStack.path = '';
-
 const tabNavigator = createBottomTabNavigator({
-  RecordStack,
-  RecordingsListStack
+  RecordingsListStack,
+  RecordStack
 });
 
 tabNavigator.path = '';

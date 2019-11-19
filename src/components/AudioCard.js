@@ -9,9 +9,6 @@ import AudioProgressSeconds from './AudioProgressSeconds';
 
 const AudioCard = ({ item, onPlaybackPress }) => {
   const {
-    state: { currentUser }
-  } = useContext(UserContext);
-  const {
     setCurrentPlayback,
     state: {
       playback,
