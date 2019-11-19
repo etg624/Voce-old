@@ -1,12 +1,16 @@
 import { AppLoading } from 'expo';
 
 import * as Font from 'expo-font';
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import AppNavigator from './src/navigation/AppNavigator';
-
 import config from './aws-exports';
+
+import { Context as RecordingContext } from './src/context/recordingContext/recordingContext';
+import { Context as UserContext } from './src/context/userContext/userContext';
+import { Provider as RecordingProvider } from './src/context/recordingContext/recordingContext';
+import { Provider as UserProvider } from './src/context/userContext/userContext';
 
 import { withAuthenticator } from 'aws-amplify-react-native';
 import Amplify, { Auth } from 'aws-amplify';
@@ -23,8 +27,16 @@ Amplify.configure({
 });
 
 function App(props) {
-  // window.LOG_LEVEL = 'DEBUG';
+  const { setCurrentUserUsername, state } = useContext(UserContext);
+
   const [isLoadingComplete, setLoadingComplete] = useState(false);
+  useEffect(() => {
+    _setUsername();
+  }, []);
+  const _setUsername = async () => {
+    const { username } = await Auth.currentUserInfo();
+    setCurrentUserUsername(username);
+  };
 
   if (!isLoadingComplete && !props.skipLoadingScreen) {
     return (
@@ -73,4 +85,10 @@ const styles = StyleSheet.create({
   }
 });
 
-export default withAuthenticator(App);
+export default withAuthenticator(() => (
+  <UserProvider>
+    <RecordingProvider>
+      <App />
+    </RecordingProvider>
+  </UserProvider>
+));

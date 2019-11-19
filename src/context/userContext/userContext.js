@@ -1,5 +1,5 @@
 import createContext from '../createContext';
-import { Auth } from 'aws-amplify';
+
 const initialState = {
   currentUser: {
     username: ''
@@ -8,24 +8,22 @@ const initialState = {
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'SET_CURRENT_USER':
+    case 'SET_CURRENT_USER_USERNAME':
       return {
         ...state,
-        currentUser: { ...state.currentUser }
+        currentUser: { ...state.currentUser, username: action.username }
       };
     default:
       return state;
   }
 };
 
-const setCurrentUser = dispatch => async () => {
-  const { username } = await Auth.currentUserInfo();
-  console.log(username);
-  dispatch({ type: 'SET_CURRENT_USER' });
+const setCurrentUserUsername = dispatch => username => {
+  dispatch({ type: 'SET_CURRENT_USER_USERNAME', username });
 };
 
 export const { Context, Provider } = createContext(
   userReducer,
-  { setCurrentUser },
+  { setCurrentUserUsername },
   initialState
 );
