@@ -28,6 +28,7 @@ const AudioCard = ({ item, onPlaybackPress }) => {
     <TouchableOpacity
       style={styles.audioCard}
       onPress={() => {
+        console.log(item);
         onPlaybackPress(item.file.key, () => {
           setCurrentPlayback(null);
         });
@@ -44,7 +45,7 @@ const AudioCard = ({ item, onPlaybackPress }) => {
           <Text style={styles.cardText}>{item.title}</Text>
           <Text>
             Recorded By:{' '}
-            {<Text style={{ fontWeight: 'bold' }}>{currentUser.username}</Text>}
+            {<Text style={{ fontWeight: 'bold' }}>{item.user.username}</Text>}
           </Text>
 
           {/* Audio Progress  */}
