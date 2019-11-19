@@ -71,7 +71,7 @@ const setCurrentPlayback = dispatch => (sound, key) =>
 const setLoading = bool => ({ type: 'SET_LOADING', bool });
 
 const postRecordingToS3AndDynamo = dispatch => {
-  return async (title, recording) => {
+  return async (title, recording, username) => {
     dispatch(setLoading(true));
     const { key, localUri, extension } = await postRecordingToS3(
       title,
@@ -80,6 +80,7 @@ const postRecordingToS3AndDynamo = dispatch => {
     );
     const audioDetails = {
       title,
+      user: { username },
       durationInMillis: recording._finalDurationMillis,
       file: {
         bucket,

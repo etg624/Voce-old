@@ -8,7 +8,7 @@ import config from '../../../aws-exports';
 import RecordButton from '../../components/RecordButton';
 import PlaybackForm from '../../components/PlaybackForm';
 import { Context as RecordingContext } from '../../context/recordingContext/recordingContext';
-
+import { Context as UserContext } from '../../context/userContext/userContext';
 const {
   aws_user_files_s3_bucket_region: region,
   aws_user_files_s3_bucket: bucket
@@ -35,6 +35,12 @@ export default function RecordingScreen({ navigation }) {
     postRecordingToS3AndDynamo,
     state: { isRecording, recording, playback }
   } = useContext(RecordingContext);
+
+  const {
+    state: {
+      currentUser: { username }
+    }
+  } = useContext(UserContext);
 
   const audioModeOptions = {
     allowsRecordingIOS: true,
@@ -127,7 +133,7 @@ export default function RecordingScreen({ navigation }) {
   const saveAndUnloadRecordedPlayback = async title => {
     setCurrentPlayback(null);
     navigation.navigate('RecordingsList');
-    await postRecordingToS3AndDynamo(title, recording);
+    await postRecordingToS3AndDynamo(title, recording, username);
     await playback.sound.unloadAsync();
   };
 

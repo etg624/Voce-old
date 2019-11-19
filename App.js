@@ -35,6 +35,7 @@ function App(props) {
   }, []);
   const _setUsername = async () => {
     const { username } = await Auth.currentUserInfo();
+
     setCurrentUserUsername(username);
   };
 

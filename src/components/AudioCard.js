@@ -11,7 +11,6 @@ const AudioCard = ({ item, onPlaybackPress }) => {
   const {
     state: { currentUser }
   } = useContext(UserContext);
-  console.log(currentUser);
   const {
     setCurrentPlayback,
     state: {

@@ -6,6 +6,9 @@ export const onCreateAudio = `subscription OnCreateAudio {
     id
     title
     durationInMillis
+    user {
+      username
+    }
     file {
       bucket
       key
@@ -19,6 +22,9 @@ export const onUpdateAudio = `subscription OnUpdateAudio {
     id
     title
     durationInMillis
+    user {
+      username
+    }
     file {
       bucket
       key
@@ -32,6 +38,9 @@ export const onDeleteAudio = `subscription OnDeleteAudio {
     id
     title
     durationInMillis
+    user {
+      username
+    }
     file {
       bucket
       key

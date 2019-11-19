@@ -2,6 +2,7 @@ type Audio @model {
   id: ID!
   title: String!
   durationInMillis: Int!
+  user: User
   file: S3Object
 }
 
@@ -9,6 +10,14 @@ type S3Object {
   bucket: String!
   key: String!
   region: String!
+}
+
+type User {
+  username: String!
+}
+
+input UserInput {
+  username: String!
 }
 
 input S3ObjectInput {
@@ -22,6 +31,7 @@ input S3ObjectInput {
 input CreateAudioInput {
   id: ID
   title: String!
+  user: UserInput!
   durationInMillis: Int!
   file: S3ObjectInput
 }

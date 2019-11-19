@@ -6,6 +6,9 @@ export const getAudio = `query GetAudio($id: ID!) {
     id
     title
     durationInMillis
+    user {
+      username
+    }
     file {
       bucket
       key
@@ -24,6 +27,9 @@ export const listAudios = `query ListAudios(
       id
       title
       durationInMillis
+      user {
+        username
+      }
       file {
         bucket
         key
