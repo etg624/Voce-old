@@ -27,8 +27,8 @@ const RecordButton = ({
                 style={styles.controlImage}
                 source={
                   isRecording
-                    ? require('../../../assets/images/stop.png')
-                    : require('../../../assets/images/mic.png')
+                    ? require('../assets/images/stop.png')
+                    : require('../assets/images/mic.png')
                 }
               />
             </View>

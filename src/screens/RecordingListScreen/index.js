@@ -4,8 +4,8 @@ import { Audio } from 'expo-av';
 import { Storage } from 'aws-amplify';
 
 import Loading from '../../components/Loading';
-import RecordingsList from './components/RecordingsList';
-import EmptyRecordingList from './components/EmptyRecordingList';
+import RecordingsList from '../../components/RecordingsList';
+import EmptyRecordingList from '../../components/EmptyRecordingList';
 import { Context as RecordingContext } from '../../context/recordingContext/recordingContext';
 
 function RecordingsListScreen() {

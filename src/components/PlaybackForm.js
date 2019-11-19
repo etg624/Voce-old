@@ -40,7 +40,7 @@ const PlaybackForm = ({ savePlaybackInfo, startPlayback }) => {
         <TouchableOpacity onPress={() => startPlayback()}>
           <Image
             style={styles.image}
-            source={require('../../../assets/images/play.png')}
+            source={require('../assets/images/play.png')}
           />
         </TouchableOpacity>
         <TouchableOpacity
@@ -48,7 +48,7 @@ const PlaybackForm = ({ savePlaybackInfo, startPlayback }) => {
         >
           <Image
             style={{ height: 40, width: 40 }}
-            source={require('../../../assets/images/addRecording.png')}
+            source={require('../assets/images/addRecording.png')}
           />
         </TouchableOpacity>
       </View>

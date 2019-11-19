@@ -2,8 +2,8 @@ import React, { useContext } from 'react';
 import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Auth } from 'aws-amplify';
 
-import { Context as RecordingContext } from '../../../context/recordingContext/recordingContext';
-import { Context as UserContext } from '../../../context/userContext/userContext';
+import { Context as RecordingContext } from '../context/recordingContext/recordingContext';
+import { Context as UserContext } from '../context/userContext/userContext';
 import AudioProgressBar from './AudioProgressBar';
 import AudioProgressSeconds from './AudioProgressSeconds';
 
@@ -38,7 +38,7 @@ const AudioCard = ({ item, onPlaybackPress }) => {
         <View style={styles.imageContainer}>
           <Image
             style={styles.image}
-            source={require('../../../assets/images/speakingGuy.png')}
+            source={require('../assets/images/speakingGuy.png')}
           />
         </View>
         <View>

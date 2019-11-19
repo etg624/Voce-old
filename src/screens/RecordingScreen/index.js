@@ -5,8 +5,8 @@ import { View, StyleSheet, Text } from 'react-native';
 import { Storage, Auth } from 'aws-amplify';
 
 import config from '../../../aws-exports';
-import RecordButton from './components/RecordButton';
-import PlaybackForm from './components/PlaybackForm';
+import RecordButton from '../../components/RecordButton';
+import PlaybackForm from '../../components/PlaybackForm';
 import { Context as RecordingContext } from '../../context/recordingContext/recordingContext';
 
 const {
