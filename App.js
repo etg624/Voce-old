@@ -10,9 +10,10 @@ import config from './aws-exports';
 import { Context as UserContext } from './src/context/userContext/userContext';
 import { Provider as RecordingProvider } from './src/context/recordingContext/recordingContext';
 import { Provider as UserProvider } from './src/context/userContext/userContext';
-
+import { createUser } from './src/graphql/mutations';
+import { listUsers, getUser } from './src/graphql/queries';
 import { withAuthenticator } from 'aws-amplify-react-native';
-import Amplify, { Auth } from 'aws-amplify';
+import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify';
 
 Amplify.configure({
   ...config,
@@ -26,16 +27,40 @@ Amplify.configure({
 });
 
 function App(props) {
-  const { setCurrentUserUsername, state } = useContext(UserContext);
+  const {
+    setCurrentUserData,
+    state: { currentUser }
+  } = useContext(UserContext);
 
   const [isLoadingComplete, setLoadingComplete] = useState(false);
-  useEffect(() => {
-    _setUsername();
-  }, []);
-  const _setUsername = async () => {
-    const { username } = await Auth.currentUserInfo();
 
-    setCurrentUserUsername(username);
+  useEffect(() => {
+    _findOrCreateUser();
+  }, []);
+  const _createUser = async _username => {
+    return await API.graphql(
+      graphqlOperation(createUser, { input: { username: _username } })
+    );
+  };
+
+  const _findOrCreateUser = async () => {
+    const { username } = await Auth.currentUserInfo();
+    const filterByUsername = {
+      input: { filter: { username: { eq: username } } }
+    };
+    const {
+      data: {
+        listUsers: { items }
+      }
+    } = await API.graphql(graphqlOperation(listUsers, filterByUsername));
+
+    if (!items.length) {
+      _createUser(username).then(res =>
+        setCurrentUserData(res.data.createUser)
+      );
+    } else {
+      setCurrentUserData(items[0]);
+    }
   };
 
   if (!isLoadingComplete && !props.skipLoadingScreen) {

@@ -10,7 +10,9 @@ export const onCreateAudio = `subscription OnCreateAudio {
       id
       username
       recordings {
-        nextToken
+        id
+        title
+        durationInMillis
       }
     }
     file {
@@ -30,7 +32,9 @@ export const onUpdateAudio = `subscription OnUpdateAudio {
       id
       username
       recordings {
-        nextToken
+        id
+        title
+        durationInMillis
       }
     }
     file {
@@ -50,7 +54,9 @@ export const onDeleteAudio = `subscription OnDeleteAudio {
       id
       username
       recordings {
-        nextToken
+        id
+        title
+        durationInMillis
       }
     }
     file {
@@ -66,12 +72,18 @@ export const onCreateUser = `subscription OnCreateUser {
     id
     username
     recordings {
-      items {
+      id
+      title
+      durationInMillis
+      createdBy {
         id
-        title
-        durationInMillis
+        username
       }
-      nextToken
+      file {
+        bucket
+        key
+        region
+      }
     }
   }
 }
@@ -81,12 +93,18 @@ export const onUpdateUser = `subscription OnUpdateUser {
     id
     username
     recordings {
-      items {
+      id
+      title
+      durationInMillis
+      createdBy {
         id
-        title
-        durationInMillis
+        username
       }
-      nextToken
+      file {
+        bucket
+        key
+        region
+      }
     }
   }
 }
@@ -96,12 +114,18 @@ export const onDeleteUser = `subscription OnDeleteUser {
     id
     username
     recordings {
-      items {
+      id
+      title
+      durationInMillis
+      createdBy {
         id
-        title
-        durationInMillis
+        username
       }
-      nextToken
+      file {
+        bucket
+        key
+        region
+      }
     }
   }
 }

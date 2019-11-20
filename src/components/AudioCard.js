@@ -15,10 +15,8 @@ const AudioCard = ({ item, onPlaybackPress }) => {
       playback: { seconds }
     }
   } = useContext(RecordingContext);
-
   const durationInSeconds = Math.round(item.durationInMillis / 1000);
   const progressPercentage = 100 * (seconds / durationInSeconds);
-
   const shouldShowAudioProgressUpdate = playback.key === item.file.key;
 
   return (
@@ -42,7 +40,11 @@ const AudioCard = ({ item, onPlaybackPress }) => {
           <Text style={styles.cardText}>{item.title}</Text>
           <Text>
             Recorded By:{' '}
-            {<Text style={{ fontWeight: 'bold' }}>{item.user.username}</Text>}
+            {
+              <Text style={{ fontWeight: 'bold' }}>
+                {item.createdBy.username}
+              </Text>
+            }
           </Text>
 
           {/* Audio Progress  */}

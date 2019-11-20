@@ -37,9 +37,7 @@ export default function RecordingScreen({ navigation }) {
   } = useContext(RecordingContext);
 
   const {
-    state: {
-      currentUser: { username }
-    }
+    state: { currentUser }
   } = useContext(UserContext);
 
   const audioModeOptions = {
@@ -133,7 +131,12 @@ export default function RecordingScreen({ navigation }) {
   const saveAndUnloadRecordedPlayback = async title => {
     setCurrentPlayback(null);
     navigation.navigate('RecordingsList');
-    await postRecordingToS3AndDynamo(title, recording, username);
+    await postRecordingToS3AndDynamo(
+      title,
+      recording,
+      currentUser.currentUser.username,
+      currentUser.currentUser.id
+    );
     await playback.sound.unloadAsync();
   };
 

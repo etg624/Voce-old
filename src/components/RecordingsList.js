@@ -13,7 +13,7 @@ const RecordingsList = ({
     <>
       <NavigationEvents onDidBlur={() => setCurrentPlayback(null)} />
       <FlatList
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={item => item.id}
         data={recordings}
         renderItem={({ item }) => {
           return <AudioCard item={item} onPlaybackPress={onPlaybackPress} />;

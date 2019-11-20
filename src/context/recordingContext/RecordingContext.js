@@ -71,30 +71,34 @@ const setCurrentPlayback = dispatch => (sound, key) =>
 const setLoading = bool => ({ type: 'SET_LOADING', bool });
 
 const postRecordingToS3AndDynamo = dispatch => {
-  return async (title, recording, username) => {
+  return async (title, recording, username, id) => {
     dispatch(setLoading(true));
     const { key, localUri, extension } = await postRecordingToS3(
       title,
       recording,
       'public'
     );
+    const file = {
+      bucket,
+      region,
+      localUri,
+      key,
+      mimeType: `audio/x-${extension}`
+    };
+    const createdBy = { username, id };
+
     const audioDetails = {
       title,
-      user: { username },
+      createdBy,
       durationInMillis: recording._finalDurationMillis,
-      file: {
-        bucket,
-        region,
-        localUri,
-        key,
-        mimeType: `audio/x-${extension}`
-      }
+      file
     };
     const { data } = await postRecordingToDynamo(audioDetails);
     dispatch({
       type: 'POST_RECORDING_TO_S3_AND_DYNAMO',
       recording: data.createAudio
     });
+
     dispatch(setLoading(false));
   };
 };
