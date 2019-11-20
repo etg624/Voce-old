@@ -3,11 +3,10 @@ import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 import React, { useState, useContext, useEffect } from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import AppNavigator from './src/navigation/AppNavigator';
 import config from './aws-exports';
 
-import { Context as RecordingContext } from './src/context/recordingContext/recordingContext';
 import { Context as UserContext } from './src/context/userContext/userContext';
 import { Provider as RecordingProvider } from './src/context/recordingContext/recordingContext';
 import { Provider as UserProvider } from './src/context/userContext/userContext';
@@ -62,6 +61,7 @@ async function loadResourcesAsync() {
     Font.loadAsync({
       // This is the font that we are using for our tab bar
       ...Ionicons.font,
+      ...MaterialIcons.font,
       // We include SpaceMono because we use it in HomeScreen.js. Feel free to
       // remove this if you are not using it in your app
       'space-mono': require('./src/assets/fonts/SpaceMono-Regular.ttf')
@@ -86,10 +86,13 @@ const styles = StyleSheet.create({
   }
 });
 
-export default withAuthenticator(() => (
-  <UserProvider>
-    <RecordingProvider>
-      <App />
-    </RecordingProvider>
-  </UserProvider>
-));
+export default withAuthenticator(
+  () => (
+    <UserProvider>
+      <RecordingProvider>
+        <App />
+      </RecordingProvider>
+    </UserProvider>
+  ),
+  true
+);

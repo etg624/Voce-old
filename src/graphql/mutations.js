@@ -6,8 +6,12 @@ export const createAudio = `mutation CreateAudio($input: CreateAudioInput!) {
     id
     title
     durationInMillis
-    user {
+    createdBy {
+      id
       username
+      recordings {
+        nextToken
+      }
     }
     file {
       bucket
@@ -22,8 +26,12 @@ export const updateAudio = `mutation UpdateAudio($input: UpdateAudioInput!) {
     id
     title
     durationInMillis
-    user {
+    createdBy {
+      id
       username
+      recordings {
+        nextToken
+      }
     }
     file {
       bucket
@@ -38,13 +46,62 @@ export const deleteAudio = `mutation DeleteAudio($input: DeleteAudioInput!) {
     id
     title
     durationInMillis
-    user {
+    createdBy {
+      id
       username
+      recordings {
+        nextToken
+      }
     }
     file {
       bucket
       key
       region
+    }
+  }
+}
+`;
+export const createUser = `mutation CreateUser($input: CreateUserInput!) {
+  createUser(input: $input) {
+    id
+    username
+    recordings {
+      items {
+        id
+        title
+        durationInMillis
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
+  updateUser(input: $input) {
+    id
+    username
+    recordings {
+      items {
+        id
+        title
+        durationInMillis
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
+  deleteUser(input: $input) {
+    id
+    username
+    recordings {
+      items {
+        id
+        title
+        durationInMillis
+      }
+      nextToken
     }
   }
 }

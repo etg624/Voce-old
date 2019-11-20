@@ -15,5 +15,22 @@
                 "voce4b8c9b0e": {}
             }
         }
+    },
+    "user": {
+        "awscloudformation": {
+            "AuthRoleName": "voce-user-20191119141005-authRole",
+            "UnauthRoleArn": "arn:aws:iam::060605535278:role/voce-user-20191119141005-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::060605535278:role/voce-user-20191119141005-authRole",
+            "Region": "us-west-2",
+            "DeploymentBucketName": "voce-user-20191119141005-deployment",
+            "UnauthRoleName": "voce-user-20191119141005-unauthRole",
+            "StackName": "voce-user-20191119141005",
+            "StackId": "arn:aws:cloudformation:us-west-2:060605535278:stack/voce-user-20191119141005/57a01ba0-0b19-11ea-ab0f-066ac882f2e8"
+        },
+        "categories": {
+            "auth": {
+                "voce4b8c9b0e": {}
+            }
+        }
     }
 }

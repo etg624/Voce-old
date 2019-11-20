@@ -6,8 +6,12 @@ export const getAudio = `query GetAudio($id: ID!) {
     id
     title
     durationInMillis
-    user {
+    createdBy {
+      id
       username
+      recordings {
+        nextToken
+      }
     }
     file {
       bucket
@@ -27,13 +31,46 @@ export const listAudios = `query ListAudios(
       id
       title
       durationInMillis
-      user {
+      createdBy {
+        id
         username
       }
       file {
         bucket
         key
         region
+      }
+    }
+    nextToken
+  }
+}
+`;
+export const getUser = `query GetUser($id: ID!) {
+  getUser(id: $id) {
+    id
+    username
+    recordings {
+      items {
+        id
+        title
+        durationInMillis
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const listUsers = `query ListUsers(
+  $filter: ModelUserFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      username
+      recordings {
+        nextToken
       }
     }
     nextToken

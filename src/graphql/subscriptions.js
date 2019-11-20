@@ -6,8 +6,12 @@ export const onCreateAudio = `subscription OnCreateAudio {
     id
     title
     durationInMillis
-    user {
+    createdBy {
+      id
       username
+      recordings {
+        nextToken
+      }
     }
     file {
       bucket
@@ -22,8 +26,12 @@ export const onUpdateAudio = `subscription OnUpdateAudio {
     id
     title
     durationInMillis
-    user {
+    createdBy {
+      id
       username
+      recordings {
+        nextToken
+      }
     }
     file {
       bucket
@@ -38,13 +46,62 @@ export const onDeleteAudio = `subscription OnDeleteAudio {
     id
     title
     durationInMillis
-    user {
+    createdBy {
+      id
       username
+      recordings {
+        nextToken
+      }
     }
     file {
       bucket
       key
       region
+    }
+  }
+}
+`;
+export const onCreateUser = `subscription OnCreateUser {
+  onCreateUser {
+    id
+    username
+    recordings {
+      items {
+        id
+        title
+        durationInMillis
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const onUpdateUser = `subscription OnUpdateUser {
+  onUpdateUser {
+    id
+    username
+    recordings {
+      items {
+        id
+        title
+        durationInMillis
+      }
+      nextToken
+    }
+  }
+}
+`;
+export const onDeleteUser = `subscription OnDeleteUser {
+  onDeleteUser {
+    id
+    username
+    recordings {
+      items {
+        id
+        title
+        durationInMillis
+      }
+      nextToken
     }
   }
 }
