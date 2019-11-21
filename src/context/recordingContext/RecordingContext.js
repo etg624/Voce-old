@@ -2,6 +2,7 @@ import { API, graphqlOperation } from 'aws-amplify';
 
 import config from '../../../aws-exports';
 import { listAudios } from '../../graphql/queries';
+import { deleteAudio } from '../../graphql/mutations';
 
 import createContext from '../createContext';
 import { postRecordingToDynamo, postRecordingToS3 } from './helpers/index';
@@ -51,6 +52,14 @@ const recordingReducer = (state = initialState, action) => {
         ...state,
         recordings: [...state.recordings, ...action.recordings]
       };
+    case 'HANDLE_DELETE_RECORDING': {
+      return {
+        ...state,
+        recordings: state.recordings.filter(
+          recording => recording.id !== action.recordingToDelete.id
+        )
+      };
+    }
     default:
       return state;
   }
@@ -117,9 +126,22 @@ const fetchRecordingsList = dispatch => {
   };
 };
 
+const handleDeleteRecording = dispatch => {
+  return async id => {
+    const res = await API.graphql(
+      graphqlOperation(deleteAudio, { input: { id } })
+    );
+    dispatch({
+      type: 'HANDLE_DELETE_RECORDING',
+      recordingToDelete: res.data.deleteAudio
+    });
+  };
+};
+
 export const { Context, Provider } = createContext(
   recordingReducer,
   {
+    handleDeleteRecording,
     setIsRecording,
     setRecording,
     setCurrentPlayback,

@@ -16,6 +16,7 @@ import EllipsisModal from './EllipsisModal';
 
 const AudioCard = ({ item, onPlaybackPress }) => {
   const {
+    handleDeleteRecording,
     state: {
       playback,
       playback: { seconds }
@@ -39,6 +40,7 @@ const AudioCard = ({ item, onPlaybackPress }) => {
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
         item={item}
+        handleDeleteRecording={handleDeleteRecording}
       />
       <View style={styles.cardContents}>
         <View style={styles.cardHeader}>

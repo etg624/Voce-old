@@ -1,8 +1,12 @@
 import React from 'react';
 import { Modal, View, Text, TouchableHighlight, Alert } from 'react-native';
-import { API, graphqlOperation } from 'aws-amplify';
-import { deleteAudio } from '../graphql/mutations';
-const EllipsisModal = ({ modalVisible, setModalVisible, item }) => {
+
+const EllipsisModal = ({
+  modalVisible,
+  setModalVisible,
+  item,
+  handleDeleteRecording
+}) => {
   return (
     <Modal animationType="fade" transparent={true} visible={modalVisible}>
       <View
@@ -31,9 +35,7 @@ const EllipsisModal = ({ modalVisible, setModalVisible, item }) => {
                   text: 'Delete',
                   onPress: async () => {
                     setModalVisible(false);
-                    await API.graphql(
-                      graphqlOperation(deleteAudio, { input: { id: item.id } })
-                    );
+                    handleDeleteRecording(item.id);
                   }
                 }
               ],
