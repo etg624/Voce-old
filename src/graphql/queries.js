@@ -6,15 +6,16 @@ export const getAudio = `query GetAudio($id: ID!) {
     id
     title
     durationInMillis
-    createdBy {
-      id
-      username
-    }
     file {
       bucket
       key
       region
     }
+    createdBy {
+      id
+      username
+    }
+    
   }
 }
 `;
@@ -28,17 +29,20 @@ export const listAudios = `query ListAudios(
       id
       title
       durationInMillis
+      
       createdBy {
         id
         username
       }
-        file {
-          bucket
-          key
-          region
-        }
+      file {
+        bucket
+        key
+        region
       }
-   } 
+    }
+   
+    nextToken
+  }
 }
 `;
 export const getUser = `query GetUser($id: ID!) {

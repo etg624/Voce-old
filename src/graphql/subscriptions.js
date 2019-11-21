@@ -1,54 +1,57 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateAudio = `subscription OnCreateAudio {
-  onCreateAudio {
+export const onCreateAudio = `subscription OnCreateAudio($owner: String!) {
+  onCreateAudio(owner: $owner) {
     id
     title
     durationInMillis
-    createdBy {
-      id
-      username
-    }
     file {
       bucket
       key
       region
     }
+    createdBy {
+      id
+      username
+    }
+    owner
   }
 }
 `;
-export const onUpdateAudio = `subscription OnUpdateAudio {
-  onUpdateAudio {
+export const onUpdateAudio = `subscription OnUpdateAudio($owner: String!) {
+  onUpdateAudio(owner: $owner) {
     id
     title
     durationInMillis
-    createdBy {
-      id
-      username
-    }
     file {
       bucket
       key
       region
     }
+    createdBy {
+      id
+      username
+    }
+    owner
   }
 }
 `;
-export const onDeleteAudio = `subscription OnDeleteAudio {
-  onDeleteAudio {
+export const onDeleteAudio = `subscription OnDeleteAudio($owner: String!) {
+  onDeleteAudio(owner: $owner) {
     id
     title
     durationInMillis
-    createdBy {
-      id
-      username
-    }
     file {
       bucket
       key
       region
     }
+    createdBy {
+      id
+      username
+    }
+    owner
   }
 }
 `;

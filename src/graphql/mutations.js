@@ -6,15 +6,16 @@ export const createAudio = `mutation CreateAudio($input: CreateAudioInput!) {
     id
     title
     durationInMillis
-    createdBy {
-      id
-      username
-    }
     file {
       bucket
       key
       region
     }
+    createdBy {
+      id
+      username
+    }
+    
   }
 }
 `;
@@ -23,15 +24,16 @@ export const updateAudio = `mutation UpdateAudio($input: UpdateAudioInput!) {
     id
     title
     durationInMillis
-    createdBy {
-      id
-      username
-    }
     file {
       bucket
       key
       region
     }
+    createdBy {
+      id
+      username
+    }
+    
   }
 }
 `;
@@ -40,15 +42,16 @@ export const deleteAudio = `mutation DeleteAudio($input: DeleteAudioInput!) {
     id
     title
     durationInMillis
-    createdBy {
-      id
-      username
-    }
     file {
       bucket
       key
       region
     }
+    createdBy {
+      id
+      username
+    }
+    
   }
 }
 `;

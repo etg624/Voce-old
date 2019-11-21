@@ -1,4 +1,6 @@
-type Audio @model {
+type Audio
+  @model
+  @auth(rules: [{ allow: owner, operations: [create, update, delete] }]) {
   id: ID!
   title: String!
   durationInMillis: Int!

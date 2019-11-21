@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 
 import { Context as RecordingContext } from '../context/recordingContext/recordingContext';
+import { Context as UserContext } from '../context/userContext/userContext';
 import AudioProgressBar from './AudioProgressBar';
 import AudioProgressSeconds from './AudioProgressSeconds';
 import EllipsisModal from './EllipsisModal';
@@ -23,11 +24,16 @@ const AudioCard = ({ item, onPlaybackPress }) => {
     }
   } = useContext(RecordingContext);
 
+  const {
+    state: { currentUser }
+  } = useContext(UserContext);
+
   const [modalVisible, setModalVisible] = useState(false);
 
   const durationInSeconds = Math.round(item.durationInMillis / 1000);
   const progressPercentage = 100 * (seconds / durationInSeconds);
   const shouldShowAudioProgressUpdate = playback.key === item.file.key;
+
   return (
     <View
       // <TouchableOpacity>
@@ -48,18 +54,19 @@ const AudioCard = ({ item, onPlaybackPress }) => {
           <View style={styles.userImageContainer}>
             <Image source={require('../assets/images/speakingGuy.png')} />
           </View>
-
-          <TouchableHighlight
-            style={styles.ellipsis}
-            onPress={() => {
-              setModalVisible(true);
-            }}
-          >
-            <Image
-              style={{ aspectRatio: 0.5, resizeMode: 'contain' }}
-              source={require('../assets/images/menuVertical.png')}
-            />
-          </TouchableHighlight>
+          {currentUser && item.createdBy.id === currentUser.currentUser.id ? (
+            <TouchableHighlight
+              style={styles.ellipsis}
+              onPress={() => {
+                setModalVisible(true);
+              }}
+            >
+              <Image
+                style={{ aspectRatio: 0.5, resizeMode: 'contain' }}
+                source={require('../assets/images/ellipsisVertical.png')}
+              />
+            </TouchableHighlight>
+          ) : null}
         </View>
 
         {/* Audio Text */}
