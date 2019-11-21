@@ -71,7 +71,7 @@ const setCurrentPlayback = dispatch => (sound, key) =>
 const setLoading = bool => ({ type: 'SET_LOADING', bool });
 
 const postRecordingToS3AndDynamo = dispatch => {
-  return async (title, recording, username, id) => {
+  return async (title, recording, id) => {
     dispatch(setLoading(true));
     const { key, localUri, extension } = await postRecordingToS3(
       title,
@@ -85,11 +85,10 @@ const postRecordingToS3AndDynamo = dispatch => {
       key,
       mimeType: `audio/x-${extension}`
     };
-    const createdBy = { username, id };
 
     const audioDetails = {
       title,
-      createdBy,
+      audioCreatedById: id,
       durationInMillis: recording._finalDurationMillis,
       file
     };
@@ -107,6 +106,7 @@ const fetchRecordingsList = dispatch => {
   return async () => {
     try {
       const res = await API.graphql(graphqlOperation(listAudios));
+      console.log(res);
       dispatch({
         type: 'FETCH_RECORDING_LIST',
         recordings: res.data.listAudios.items

@@ -134,7 +134,6 @@ export default function RecordingScreen({ navigation }) {
     await postRecordingToS3AndDynamo(
       title,
       recording,
-      currentUser.currentUser.username,
       currentUser.currentUser.id
     );
     await playback.sound.unloadAsync();

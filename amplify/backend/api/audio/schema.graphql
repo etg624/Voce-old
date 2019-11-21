@@ -2,14 +2,13 @@ type Audio @model {
   id: ID!
   title: String!
   durationInMillis: Int!
-  createdBy: User
   file: S3Object
+  createdBy: User @connection(name: "UserRecordings")
 }
 
 input CreateAudioInput {
   id: ID
   title: String!
-  createdBy: CreateUserInput!
   durationInMillis: Int!
   file: S3ObjectInput
 }
@@ -17,7 +16,7 @@ input CreateAudioInput {
 type User @model {
   id: ID!
   username: String!
-  recordings: [Audio]
+  recordings: [Audio] @connection(name: "UserRecordings")
 }
 
 input CreateUserInput {

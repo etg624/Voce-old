@@ -18,12 +18,10 @@ const AudioCard = ({ item, onPlaybackPress }) => {
   const durationInSeconds = Math.round(item.durationInMillis / 1000);
   const progressPercentage = 100 * (seconds / durationInSeconds);
   const shouldShowAudioProgressUpdate = playback.key === item.file.key;
-
   return (
     <TouchableOpacity
       style={styles.audioCard}
       onPress={() => {
-        console.log(item);
         onPlaybackPress(item.file.key, () => {
           setCurrentPlayback(null);
         });

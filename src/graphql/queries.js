@@ -9,11 +9,6 @@ export const getAudio = `query GetAudio($id: ID!) {
     createdBy {
       id
       username
-      recordings {
-        id
-        title
-        durationInMillis
-      }
     }
     file {
       bucket
@@ -42,9 +37,8 @@ export const listAudios = `query ListAudios(
         key
         region
       }
-    }
-    nextToken
-  }
+      }
+   } 
 }
 `;
 export const getUser = `query GetUser($id: ID!) {
@@ -52,18 +46,7 @@ export const getUser = `query GetUser($id: ID!) {
     id
     username
     recordings {
-      id
-      title
-      durationInMillis
-      createdBy {
-        id
-        username
-      }
-      file {
-        bucket
-        key
-        region
-      }
+      nextToken
     }
   }
 }
@@ -77,11 +60,6 @@ export const listUsers = `query ListUsers(
     items {
       id
       username
-      recordings {
-        id
-        title
-        durationInMillis
-      }
     }
     nextToken
   }
