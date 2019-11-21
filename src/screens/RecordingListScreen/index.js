@@ -55,7 +55,7 @@ function RecordingsListScreen() {
     }
   };
   //This is passed down to the AudioCard component
-  const onPlaybackPress = async (key, callback) => {
+  const onPlaybackPress = async key => {
     try {
       const uri = await Storage.get(key, { level: 'public' });
       const soundOptions = {
@@ -66,7 +66,6 @@ function RecordingsListScreen() {
       };
       const { sound } = await Audio.Sound.createAsync({ uri }, soundOptions);
       setCurrentPlayback(sound, key);
-      return callback;
     } catch (e) {
       console.log(e);
     }

@@ -32,11 +32,11 @@ export const listAudios = `query ListAudios(
         id
         username
       }
-      file {
-        bucket
-        key
-        region
-      }
+        file {
+          bucket
+          key
+          region
+        }
       }
    } 
 }

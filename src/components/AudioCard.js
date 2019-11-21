@@ -1,39 +1,66 @@
-import React, { useContext } from 'react';
-import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Auth } from 'aws-amplify';
+import React, { useContext, useState } from 'react';
+import {
+  View,
+  Image,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  TouchableHighlight,
+  Modal
+} from 'react-native';
 
 import { Context as RecordingContext } from '../context/recordingContext/recordingContext';
-import { Context as UserContext } from '../context/userContext/userContext';
 import AudioProgressBar from './AudioProgressBar';
 import AudioProgressSeconds from './AudioProgressSeconds';
+import EllipsisModal from './EllipsisModal';
 
 const AudioCard = ({ item, onPlaybackPress }) => {
   const {
-    setCurrentPlayback,
     state: {
       playback,
       playback: { seconds }
     }
   } = useContext(RecordingContext);
+
+  const [modalVisible, setModalVisible] = useState(false);
+
   const durationInSeconds = Math.round(item.durationInMillis / 1000);
   const progressPercentage = 100 * (seconds / durationInSeconds);
   const shouldShowAudioProgressUpdate = playback.key === item.file.key;
   return (
-    <TouchableOpacity
+    <View
+      // <TouchableOpacity>
       style={styles.audioCard}
-      onPress={() => {
-        onPlaybackPress(item.file.key, () => {
-          setCurrentPlayback(null);
-        });
-      }}
+      // onPress={() => {
+      //   onPlaybackPress(item.file.key);
+      // }}
     >
-      <View style={styles.userInfo}>
-        <View style={styles.imageContainer}>
-          <Image
-            style={styles.image}
-            source={require('../assets/images/speakingGuy.png')}
-          />
+      <EllipsisModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        item={item}
+      />
+      <View style={styles.cardContents}>
+        <View style={styles.cardHeader}>
+          {/* User Info */}
+          <View style={styles.userImageContainer}>
+            <Image source={require('../assets/images/speakingGuy.png')} />
+          </View>
+
+          <TouchableHighlight
+            style={styles.ellipsis}
+            onPress={() => {
+              setModalVisible(true);
+            }}
+          >
+            <Image
+              style={{ aspectRatio: 0.5, resizeMode: 'contain' }}
+              source={require('../assets/images/menuVertical.png')}
+            />
+          </TouchableHighlight>
         </View>
+
+        {/* Audio Text */}
         <View>
           <Text style={styles.cardText}>{item.title}</Text>
           <Text>
@@ -44,28 +71,36 @@ const AudioCard = ({ item, onPlaybackPress }) => {
               </Text>
             }
           </Text>
+        </View>
 
-          {/* Audio Progress  */}
-
-          <View style={styles.progress}>
-            <AudioProgressBar
-              progressPercentage={progressPercentage}
-              duration={durationInSeconds}
-              shouldUpdate={shouldShowAudioProgressUpdate}
-            />
-            <AudioProgressSeconds
-              duration={durationInSeconds}
-              seconds={seconds}
-              shouldShowAudioProgressUpdate={shouldShowAudioProgressUpdate}
-            />
-          </View>
+        {/* Audio Progress  */}
+        <View style={styles.progress}>
+          <AudioProgressBar
+            progressPercentage={progressPercentage}
+            duration={durationInSeconds}
+            shouldUpdate={shouldShowAudioProgressUpdate}
+          />
+          <AudioProgressSeconds
+            duration={durationInSeconds}
+            seconds={seconds}
+            shouldShowAudioProgressUpdate={shouldShowAudioProgressUpdate}
+          />
         </View>
       </View>
-    </TouchableOpacity>
+      {/* </TouchableOpacity> */}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  cardHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  ellipsis: {
+    alignSelf: 'flex-start',
+    margin: 0
+  },
   audioCard: {
     marginTop: 15,
     backgroundColor: 'white',
@@ -76,11 +111,10 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3,
-
     elevation: 5
   },
 
-  imageContainer: {
+  userImageContainer: {
     backgroundColor: 'rgba(0,0,0, 0.6)',
     borderRadius: 4,
     width: '20%',
@@ -93,7 +127,7 @@ const styles = StyleSheet.create({
     elevation: 5
   },
 
-  userInfo: {
+  cardContents: {
     margin: 20
   },
   cardText: {
