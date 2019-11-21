@@ -106,7 +106,6 @@ const fetchRecordingsList = dispatch => {
   return async () => {
     try {
       const res = await API.graphql(graphqlOperation(listAudios));
-      console.log(res);
       dispatch({
         type: 'FETCH_RECORDING_LIST',
         recordings: res.data.listAudios.items

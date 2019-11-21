@@ -45,9 +45,8 @@ function App(props) {
 
   const _findOrCreateUser = async () => {
     const { username } = await Auth.currentUserInfo();
-    const filterByUsername = {
-      input: { filter: { username: { eq: username } } }
-    };
+    const filterByUsername = { filter: { username: { eq: username } } };
+
     const {
       data: {
         listUsers: { items }
