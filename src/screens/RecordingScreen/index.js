@@ -131,11 +131,7 @@ export default function RecordingScreen({ navigation }) {
   const saveAndUnloadRecordedPlayback = async title => {
     setCurrentPlayback(null);
     navigation.navigate('RecordingsList');
-    await postRecordingToS3AndDynamo(
-      title,
-      recording,
-      currentUser.currentUser.id
-    );
+    await postRecordingToS3AndDynamo(title, recording, currentUser.id);
     await playback.sound.unloadAsync();
   };
 

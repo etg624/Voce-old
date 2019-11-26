@@ -9,7 +9,7 @@ import EmptyRecordingList from '../../components/EmptyRecordingList';
 import { Context as RecordingContext } from '../../context/recordingContext/recordingContext';
 import { Context as UserContext } from '../../context/userContext/userContext';
 
-function RecordingsListScreen({ type }) {
+function RecordingsListScreen({ type, navigation }) {
   const {
     setCurrentPlayback,
     fetchRecordingsList,
@@ -18,12 +18,13 @@ function RecordingsListScreen({ type }) {
   } = useContext(RecordingContext);
 
   const {
-    state: { currentUser }
+    getUserDataById,
+    state: { currentUser, pressedUserId, pressedUserData }
   } = useContext(UserContext);
-
   useEffect(() => {
-    type === 'profile' ? console.log('hello') : fetchRecordingsList();
-  }, [type]);
+    console.log(type === 'profile' ? 'PROFILE' : 'FEED', pressedUserId);
+    type === 'profile' ? getUserDataById(pressedUserId) : fetchRecordingsList();
+  }, [pressedUserId]);
 
   useEffect(() => {
     if (playback.sound) {
@@ -86,7 +87,7 @@ function RecordingsListScreen({ type }) {
         onPlaybackPress={onPlaybackPress}
         recordings={
           type === 'profile'
-            ? currentUser.currentUser.recordings.items
+            ? pressedUserData && pressedUserData.recordings.items
             : recordings
         }
         setCurrentPlayback={setCurrentPlayback}

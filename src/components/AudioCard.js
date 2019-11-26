@@ -4,10 +4,11 @@ import {
   Image,
   Text,
   StyleSheet,
-  TouchableOpacity,
   TouchableHighlight,
-  Modal
+  TouchableOpacity
 } from 'react-native';
+
+import { withNavigation } from 'react-navigation';
 
 import { Context as RecordingContext } from '../context/recordingContext/recordingContext';
 import { Context as UserContext } from '../context/userContext/userContext';
@@ -15,7 +16,7 @@ import AudioProgressBar from './AudioProgressBar';
 import AudioProgressSeconds from './AudioProgressSeconds';
 import EllipsisModal from './EllipsisModal';
 
-const AudioCard = ({ item, onPlaybackPress }) => {
+const AudioCard = ({ item, onPlaybackPress, navigation }) => {
   const {
     handleDeleteRecording,
     state: {
@@ -25,6 +26,7 @@ const AudioCard = ({ item, onPlaybackPress }) => {
   } = useContext(RecordingContext);
 
   const {
+    setPressedUserId,
     state: { currentUser }
   } = useContext(UserContext);
 
@@ -51,10 +53,16 @@ const AudioCard = ({ item, onPlaybackPress }) => {
       <View style={styles.cardContents} onLayout={event => {}}>
         <View style={styles.cardHeader}>
           {/* User Info */}
-          <View style={styles.userImageContainer}>
+          <TouchableOpacity
+            style={styles.userImageContainer}
+            onPress={() => {
+              setPressedUserId(item.createdBy.id);
+              navigation.navigate('Profile', { userId: item.createdBy.id });
+            }}
+          >
             <Image source={require('../assets/images/speakingGuy.png')} />
-          </View>
-          {currentUser && item.createdBy.id === currentUser.currentUser.id ? (
+          </TouchableOpacity>
+          {currentUser && item.createdBy.id === currentUser.id ? (
             <TouchableHighlight
               style={styles.ellipsis}
               onPress={() => {
@@ -150,4 +158,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default AudioCard;
+export default withNavigation(AudioCard);

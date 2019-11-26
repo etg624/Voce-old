@@ -50,7 +50,7 @@ const recordingReducer = (state = initialState, action) => {
     case 'FETCH_RECORDING_LIST':
       return {
         ...state,
-        recordings: [...state.recordings, ...action.recordings]
+        recordings: [...action.recordings]
       };
     case 'HANDLE_DELETE_RECORDING': {
       return {
