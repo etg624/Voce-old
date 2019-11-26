@@ -48,7 +48,7 @@ const AudioCard = ({ item, onPlaybackPress }) => {
         item={item}
         handleDeleteRecording={handleDeleteRecording}
       />
-      <View style={styles.cardContents}>
+      <View style={styles.cardContents} onLayout={event => {}}>
         <View style={styles.cardHeader}>
           {/* User Info */}
           <View style={styles.userImageContainer}>
@@ -111,7 +111,6 @@ const styles = StyleSheet.create({
     margin: 0
   },
   audioCard: {
-    marginTop: 15,
     backgroundColor: 'white',
     shadowColor: '#000',
     shadowOffset: {

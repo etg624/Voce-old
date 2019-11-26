@@ -8,6 +8,7 @@ import {
 import TabBarIcon from '../components/TabBarIcon';
 import RecordingScreen from '../screens/RecordingScreen/index';
 import RecordingsListScreen from '../screens/RecordingListScreen/index';
+import ProfileScreen from '../screens/ProfileScreen/index';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -53,8 +54,21 @@ RecordingsListStack.navigationOptions = {
 
 RecordingsListStack.path = '';
 
+const ProfileStack = createStackNavigator({ Profile: ProfileScreen }, config);
+
+ProfileStack.navigationOptions = {
+  tabBarLabel: 'Profile',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-person' : 'md-list'}
+    />
+  )
+};
+
 const tabNavigator = createBottomTabNavigator({
   RecordingsListStack,
+  ProfileStack,
   RecordStack
 });
 

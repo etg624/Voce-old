@@ -12,7 +12,7 @@ input CreateAudioInput {
   id: ID
   title: String!
   durationInMillis: Int!
-  file: S3ObjectInput
+  file: S3ObjectInput # need it not required for a short time, for simple queries on AWS console.
 }
 
 type User @model {

@@ -11,8 +11,7 @@ const userReducer = (state = initialState, action) => {
         ...state,
         currentUser: { ...state.currentUser, currentUser: action.data }
       };
-    case 'SET_CURRENT_USER_ID':
-      return { ...state, currentUser: { ...state.currentUser, id: action.id } };
+
     default:
       return state;
   }
@@ -21,9 +20,7 @@ const userReducer = (state = initialState, action) => {
 const setCurrentUserData = dispatch => data => {
   dispatch({ type: 'SET_CURRENT_USER_DATA', data });
 };
-const setCurrentUserId = dispatch => id => {
-  dispatch({ type: 'SET_CURRENT_USER_ID', id });
-};
+
 export const { Context, Provider } = createContext(
   userReducer,
   { setCurrentUserData },

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Dimensions } from 'react-native';
 import { Audio } from 'expo-av';
 import { Storage } from 'aws-amplify';
 
@@ -7,8 +7,9 @@ import Loading from '../../components/Loading';
 import RecordingsList from '../../components/RecordingsList';
 import EmptyRecordingList from '../../components/EmptyRecordingList';
 import { Context as RecordingContext } from '../../context/recordingContext/recordingContext';
+import { Context as UserContext } from '../../context/userContext/userContext';
 
-function RecordingsListScreen() {
+function RecordingsListScreen({ type }) {
   const {
     setCurrentPlayback,
     fetchRecordingsList,
@@ -16,9 +17,13 @@ function RecordingsListScreen() {
     state: { recordings, playback, loading }
   } = useContext(RecordingContext);
 
+  const {
+    state: { currentUser }
+  } = useContext(UserContext);
+
   useEffect(() => {
-    fetchRecordingsList();
-  }, []);
+    type === 'profile' ? console.log('hello') : fetchRecordingsList();
+  }, [type]);
 
   useEffect(() => {
     if (playback.sound) {
@@ -79,7 +84,11 @@ function RecordingsListScreen() {
     <View style={styles.listContainer}>
       <RecordingsList
         onPlaybackPress={onPlaybackPress}
-        recordings={recordings}
+        recordings={
+          type === 'profile'
+            ? currentUser.currentUser.recordings.items
+            : recordings
+        }
         setCurrentPlayback={setCurrentPlayback}
       />
     </View>

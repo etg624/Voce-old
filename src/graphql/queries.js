@@ -63,7 +63,16 @@ export const listUsers = `query ListUsers(
   listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
-      username
+      username 
+      recordings{
+        items {
+          title
+          file { key }
+          id
+          createdBy {id username}
+          durationInMillis
+        }
+      }
     }
     nextToken
   }
