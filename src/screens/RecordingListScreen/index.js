@@ -23,7 +23,9 @@ function RecordingsListScreen({ type, navigation }) {
   } = useContext(UserContext);
   useEffect(() => {
     console.log(type === 'profile' ? 'PROFILE' : 'FEED', pressedUserId);
-    type === 'profile' ? getUserDataById(pressedUserId) : fetchRecordingsList();
+    type === 'profile'
+      ? getUserDataById(pressedUserId || currentUser.id)
+      : fetchRecordingsList();
   }, [pressedUserId]);
 
   useEffect(() => {
