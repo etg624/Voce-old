@@ -1,4 +1,4 @@
-import React, { useRef, createRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { FlatList, ScrollView } from "react-native";
 import { NavigationEvents } from "react-navigation";
 
@@ -22,7 +22,6 @@ const RecordingsList = ({ onPlaybackPress, recordings, setCurrentPlayback }) => 
   const handlePlayRecordingOnScroll = ({ nativeEvent }) => {
     const { y } = nativeEvent.contentOffset;
     setYState(y);
-
     if (currentIndex >= 0 && currentIndex !== prevIndex) {
       onPlaybackPress(recordings[currentIndex].file.key);
     }
