@@ -1,14 +1,14 @@
-import { API, graphqlOperation } from 'aws-amplify';
+import { API, graphqlOperation } from "aws-amplify";
 
-import config from '../../../aws-exports';
-import { listAudios } from '../../graphql/queries';
-import { deleteAudio } from '../../graphql/mutations';
+import config from "../../../aws-exports";
+import { listAudios } from "../../graphql/queries";
+import { deleteAudio } from "../../graphql/mutations";
 
-import createContext from '../createContext';
-import { postRecordingToDynamo, postRecordingToS3 } from './helpers/index';
+import createContext from "../createContext";
+import { postRecordingToDynamo, postRecordingToS3 } from "./helpers/index";
 
 const initialState = {
-  playback: { sound: null, seconds: 0, key: '' },
+  playback: { sound: null, seconds: 0, key: "" },
   seconds: 0,
   isRecording: false,
   recording: null,
@@ -23,7 +23,7 @@ const {
 
 const recordingReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'UPDATE_PLAYBACK_SECONDS':
+    case "UPDATE_PLAYBACK_SECONDS":
       return {
         ...state,
         playback: {
@@ -31,28 +31,28 @@ const recordingReducer = (state = initialState, action) => {
           seconds: action.key === state.playback.key ? action.seconds : 0
         }
       };
-    case 'SET_LOADING':
+    case "SET_LOADING":
       return { ...state, loading: action.bool };
-    case 'SET_IS_RECORDING':
+    case "SET_IS_RECORDING":
       return { ...state, isRecording: action.bool };
-    case 'SET_RECORDING':
+    case "SET_RECORDING":
       return { ...state, recording: action.recording };
-    case 'SET_CURRENT_PLAYBACK':
+    case "SET_CURRENT_PLAYBACK":
       return {
         ...state,
         playback: { ...state.playback, sound: action.sound, key: action.key }
       };
-    case 'POST_RECORDING_TO_S3_AND_DYNAMO':
+    case "POST_RECORDING_TO_S3_AND_DYNAMO":
       return {
         ...state,
         recordings: [action.recording, ...state.recordings]
       };
-    case 'FETCH_RECORDING_LIST':
+    case "FETCH_RECORDING_LIST":
       return {
         ...state,
         recordings: [...action.recordings]
       };
-    case 'HANDLE_DELETE_RECORDING': {
+    case "HANDLE_DELETE_RECORDING": {
       return {
         ...state,
         recordings: state.recordings.filter(
@@ -66,18 +66,17 @@ const recordingReducer = (state = initialState, action) => {
 };
 
 const updatePlaybackSeconds = dispatch => (key, seconds) =>
-  dispatch({ type: 'UPDATE_PLAYBACK_SECONDS', seconds, key });
+  dispatch({ type: "UPDATE_PLAYBACK_SECONDS", seconds, key });
 
-const setIsRecording = dispatch => bool =>
-  dispatch({ type: 'SET_IS_RECORDING', bool });
+const setIsRecording = dispatch => bool => dispatch({ type: "SET_IS_RECORDING", bool });
 
 const setRecording = dispatch => recording =>
-  dispatch({ type: 'SET_RECORDING', recording });
+  dispatch({ type: "SET_RECORDING", recording });
 
 const setCurrentPlayback = dispatch => (sound, key) =>
-  dispatch({ type: 'SET_CURRENT_PLAYBACK', sound, key });
+  dispatch({ type: "SET_CURRENT_PLAYBACK", sound, key });
 //this is to be used with other action creators that have dispatch attached to them
-const setLoading = bool => ({ type: 'SET_LOADING', bool });
+const setLoading = bool => ({ type: "SET_LOADING", bool });
 
 const postRecordingToS3AndDynamo = dispatch => {
   return async (title, recording, id) => {
@@ -85,7 +84,7 @@ const postRecordingToS3AndDynamo = dispatch => {
     const { key, localUri, extension } = await postRecordingToS3(
       title,
       recording,
-      'public'
+      "public"
     );
     const file = {
       bucket,
@@ -103,7 +102,7 @@ const postRecordingToS3AndDynamo = dispatch => {
     };
     const { data } = await postRecordingToDynamo(audioDetails);
     dispatch({
-      type: 'POST_RECORDING_TO_S3_AND_DYNAMO',
+      type: "POST_RECORDING_TO_S3_AND_DYNAMO",
       recording: data.createAudio
     });
 
@@ -116,7 +115,7 @@ const fetchRecordingsList = dispatch => {
     try {
       const res = await API.graphql(graphqlOperation(listAudios));
       dispatch({
-        type: 'FETCH_RECORDING_LIST',
+        type: "FETCH_RECORDING_LIST",
         recordings: res.data.listAudios.items
       });
       dispatch(setLoading(false));
@@ -128,11 +127,9 @@ const fetchRecordingsList = dispatch => {
 
 const handleDeleteRecording = dispatch => {
   return async id => {
-    const res = await API.graphql(
-      graphqlOperation(deleteAudio, { input: { id } })
-    );
+    const res = await API.graphql(graphqlOperation(deleteAudio, { input: { id } }));
     dispatch({
-      type: 'HANDLE_DELETE_RECORDING',
+      type: "HANDLE_DELETE_RECORDING",
       recordingToDelete: res.data.deleteAudio
     });
   };

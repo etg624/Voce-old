@@ -1,17 +1,14 @@
-import React from 'react';
-import { Platform } from 'react-native';
-import {
-  createStackNavigator,
-  createBottomTabNavigator
-} from 'react-navigation';
+import React from "react";
+import { Platform } from "react-native";
+import { createStackNavigator, createBottomTabNavigator } from "react-navigation";
 
-import TabBarIcon from '../components/TabBarIcon';
-import RecordingScreen from '../screens/RecordingScreen/index';
-import RecordingsListScreen from '../screens/RecordingListScreen/index';
-import ProfileScreen from '../screens/ProfileScreen/index';
+import TabBarIcon from "../components/TabBarIcon";
+import RecordingScreen from "../screens/RecordingScreen/index";
+import RecordingsListScreen from "../screens/RecordingListScreen/index";
+import ProfileScreen from "../screens/ProfileScreen/index";
 
 const config = Platform.select({
-  web: { headerMode: 'screen' },
+  web: { headerMode: "screen" },
   default: {}
 });
 
@@ -23,16 +20,13 @@ const RecordStack = createStackNavigator(
 );
 
 RecordStack.navigationOptions = {
-  tabBarLabel: 'Record',
+  tabBarLabel: "Record",
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? `ios-mic` : 'md-mic'}
-    />
+    <TabBarIcon focused={focused} name={Platform.OS === "ios" ? `ios-mic` : "md-mic"} />
   )
 };
 
-RecordStack.path = '';
+RecordStack.path = "";
 
 /*------Recordings List------*/
 const RecordingsListStack = createStackNavigator(
@@ -43,25 +37,22 @@ const RecordingsListStack = createStackNavigator(
 );
 
 RecordingsListStack.navigationOptions = {
-  tabBarLabel: 'Recordings',
+  tabBarLabel: "Recordings",
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-list' : 'md-list'}
-    />
+    <TabBarIcon focused={focused} name={Platform.OS === "ios" ? "ios-list" : "md-list"} />
   )
 };
 
-RecordingsListStack.path = '';
+RecordingsListStack.path = "";
 
 const ProfileStack = createStackNavigator({ Profile: ProfileScreen }, config);
 
 ProfileStack.navigationOptions = {
-  tabBarLabel: 'Profile',
+  tabBarLabel: "Profile",
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-person' : 'md-list'}
+      name={Platform.OS === "ios" ? "ios-person" : "md-list"}
     />
   )
 };
@@ -72,6 +63,6 @@ const tabNavigator = createBottomTabNavigator({
   RecordStack
 });
 
-tabNavigator.path = '';
+tabNavigator.path = "";
 
 export default tabNavigator;

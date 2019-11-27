@@ -1,14 +1,14 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { Audio } from 'expo-av';
-import * as Permissions from 'expo-permissions';
-import { View, StyleSheet, Text } from 'react-native';
-import { Storage, Auth } from 'aws-amplify';
+import React, { useState, useContext, useEffect } from "react";
+import { Audio } from "expo-av";
+import * as Permissions from "expo-permissions";
+import { View, StyleSheet, Text } from "react-native";
+import { Storage, Auth } from "aws-amplify";
 
-import config from '../../../aws-exports';
-import RecordButton from '../../components/RecordButton';
-import PlaybackForm from '../../components/PlaybackForm';
-import { Context as RecordingContext } from '../../context/recordingContext/recordingContext';
-import { Context as UserContext } from '../../context/userContext/userContext';
+import config from "../../../aws-exports";
+import RecordButton from "../../components/RecordButton";
+import PlaybackForm from "../../components/PlaybackForm";
+import { Context as RecordingContext } from "../../context/recordingContext/recordingContext";
+import { Context as UserContext } from "../../context/userContext/userContext";
 const {
   aws_user_files_s3_bucket_region: region,
   aws_user_files_s3_bucket: bucket
@@ -52,10 +52,8 @@ export default function RecordingScreen({ navigation }) {
 
   useEffect(() => {
     async function askForAudioPermissions() {
-      const { status } = await Permissions.askAsync(
-        Permissions.AUDIO_RECORDING
-      );
-      setAudioPermissions(status === 'granted');
+      const { status } = await Permissions.askAsync(Permissions.AUDIO_RECORDING);
+      setAudioPermissions(status === "granted");
     }
 
     askForAudioPermissions();
@@ -69,7 +67,7 @@ export default function RecordingScreen({ navigation }) {
       await _recording.prepareToRecordAsync(
         (Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY = {
           android: {
-            extension: '.m4a',
+            extension: ".m4a",
             outputFormat: Audio.RECORDING_OPTION_ANDROID_OUTPUT_FORMAT_MPEG_4,
             audioEncoder: Audio.RECORDING_OPTION_ANDROID_AUDIO_ENCODER_DEFAULT,
             sampleRate: 44100,
@@ -77,7 +75,7 @@ export default function RecordingScreen({ navigation }) {
             bitRate: 128000
           },
           ios: {
-            extension: '.m4a',
+            extension: ".m4a",
             outputFormat: Audio.RECORDING_OPTION_IOS_OUTPUT_FORMAT_MPEG4AAC,
             audioQuality: Audio.RECORDING_OPTION_IOS_AUDIO_QUALITY_MEDIUM,
             sampleRate: 44100,
@@ -121,8 +119,7 @@ export default function RecordingScreen({ navigation }) {
       allowsRecordingIOS: false
     });
     try {
-      (await playback.sound.playAsync()) ||
-        (await playback.sound.replayAsync());
+      (await playback.sound.playAsync()) || (await playback.sound.replayAsync());
     } catch (error) {
       console.log(error);
     }
@@ -130,7 +127,7 @@ export default function RecordingScreen({ navigation }) {
 
   const saveAndUnloadRecordedPlayback = async title => {
     setCurrentPlayback(null);
-    navigation.navigate('RecordingsList');
+    navigation.navigate("RecordingsList");
     await postRecordingToS3AndDynamo(title, recording, currentUser.id);
     await playback.sound.unloadAsync();
   };
@@ -140,7 +137,7 @@ export default function RecordingScreen({ navigation }) {
       style={
         !playback.sound
           ? styles.mainContainer
-          : { ...styles.mainContainer, justifyContent: 'center' }
+          : { ...styles.mainContainer, justifyContent: "center" }
       }
     >
       {playback.sound ? (
@@ -154,7 +151,7 @@ export default function RecordingScreen({ navigation }) {
         <>
           <View style={styles.recordingStatus}>
             <Text style={styles.recordingStatusText}>
-              {isRecording ? 'Recording' : 'Record'}
+              {isRecording ? "Recording" : "Record"}
             </Text>
           </View>
           <View style={styles.recordingButton}>
@@ -172,22 +169,22 @@ export default function RecordingScreen({ navigation }) {
 }
 
 RecordingScreen.navigationOptions = {
-  title: 'Record'
+  title: "Record"
 };
 
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    justifyContent: 'flex-end'
+    justifyContent: "flex-end"
   },
   recordingButton: {
     marginBottom: 80,
-    alignSelf: 'center'
+    alignSelf: "center"
   },
   recordingStatus: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
+    alignItems: "center",
+    justifyContent: "center"
   },
   recordingStatusText: {
     fontSize: 60

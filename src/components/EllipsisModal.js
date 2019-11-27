@@ -1,5 +1,5 @@
-import React from 'react';
-import { Modal, View, Text, TouchableHighlight, Alert } from 'react-native';
+import React from "react";
+import { Modal, View, Text, TouchableHighlight, Alert } from "react-native";
 
 const EllipsisModal = ({
   modalVisible,
@@ -12,27 +12,27 @@ const EllipsisModal = ({
       <View
         style={{
           flex: 1,
-          backgroundColor: 'rgba(0, 0, 0, .5)',
-          justifyContent: 'flex-end',
-          alignContent: 'center'
+          backgroundColor: "rgba(0, 0, 0, .5)",
+          justifyContent: "flex-end",
+          alignContent: "center"
         }}
       >
         <TouchableHighlight
           onPress={() =>
             Alert.alert(
-              'Delete?',
-              'Delete this recording?',
+              "Delete?",
+              "Delete this recording?",
               [
                 {
-                  text: 'Cancel',
+                  text: "Cancel",
                   onPress: () => setModalVisible(false),
-                  style: 'cancel'
+                  style: "cancel"
                 },
                 {
                   //TODO make it only possible for user that created recording to delete
                   // put most of this logic in context and update state accordingly
                   // and refactor
-                  text: 'Delete',
+                  text: "Delete",
                   onPress: async () => {
                     setModalVisible(false);
                     handleDeleteRecording(item.id);
@@ -43,8 +43,8 @@ const EllipsisModal = ({
             )
           }
           style={{
-            alignItems: 'center',
-            backgroundColor: 'white',
+            alignItems: "center",
+            backgroundColor: "white",
             marginBottom: 20,
             marginHorizontal: 20,
             borderRadius: 6,
@@ -53,10 +53,10 @@ const EllipsisModal = ({
         >
           <Text
             style={{
-              color: 'black',
+              color: "black",
 
               fontSize: 20,
-              alignSelf: 'center'
+              alignSelf: "center"
             }}
           >
             Delete?
@@ -65,8 +65,8 @@ const EllipsisModal = ({
         <TouchableHighlight
           onPress={() => setModalVisible(false)}
           style={{
-            alignItems: 'center',
-            backgroundColor: 'white',
+            alignItems: "center",
+            backgroundColor: "white",
             marginBottom: 20,
             marginHorizontal: 20,
             borderRadius: 6,
@@ -75,10 +75,10 @@ const EllipsisModal = ({
         >
           <Text
             style={{
-              color: 'black',
+              color: "black",
 
               fontSize: 20,
-              alignSelf: 'center'
+              alignSelf: "center"
             }}
           >
             Cancel

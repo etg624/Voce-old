@@ -1,11 +1,5 @@
-import React from 'react';
-import {
-  Text,
-  View,
-  TouchableHighlight,
-  Image,
-  StyleSheet
-} from 'react-native';
+import React from "react";
+import { Text, View, TouchableHighlight, Image, StyleSheet } from "react-native";
 
 const RecordButton = ({
   hasAudioPermissions,
@@ -27,15 +21,15 @@ const RecordButton = ({
                 style={styles.controlImage}
                 source={
                   isRecording
-                    ? require('../assets/images/stop.png')
-                    : require('../assets/images/mic.png')
+                    ? require("../assets/images/stop.png")
+                    : require("../assets/images/mic.png")
                 }
               />
             </View>
           </TouchableHighlight>
           <View style={styles.controlTextContainer}>
             <Text style={styles.controlText}>
-              {isRecording ? 'Tap to Stop Recording' : 'Tap to Record'}
+              {isRecording ? "Tap to Stop Recording" : "Tap to Record"}
             </Text>
           </View>
         </View>
@@ -49,10 +43,10 @@ const RecordButton = ({
 const styles = StyleSheet.create({
   imageContainer: {
     borderRadius: 100,
-    alignSelf: 'center',
+    alignSelf: "center",
     padding: 10,
-    backgroundColor: 'rgb(239, 87, 87)',
-    shadowColor: '#000',
+    backgroundColor: "rgb(239, 87, 87)",
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.8,
     shadowRadius: 2,
@@ -61,14 +55,14 @@ const styles = StyleSheet.create({
   controlImage: {
     width: 150,
     height: 150,
-    tintColor: 'white'
+    tintColor: "white"
   },
   controlText: {
     fontSize: 30
   },
   controlTextContainer: {
     marginTop: 30,
-    alignItems: 'center'
+    alignItems: "center"
   }
 });
 
