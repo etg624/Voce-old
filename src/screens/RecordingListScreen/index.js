@@ -1,26 +1,27 @@
-import React, { useContext, useEffect } from "react";
-import { View, StyleSheet, Dimensions } from "react-native";
-import { Audio } from "expo-av";
-import { Storage } from "aws-amplify";
+import React, { useContext, useEffect } from 'react';
+import { View, StyleSheet, Dimensions } from 'react-native';
+import { Audio } from 'expo-av';
+import { Storage } from 'aws-amplify';
 
-import Loading from "../../components/Loading";
-import RecordingsList from "../../components/RecordingsList";
-import EmptyRecordingList from "../../components/EmptyRecordingList";
-import { Context as RecordingContext } from "../../context/recordingContext/recordingContext";
-import { Context as UserContext } from "../../context/userContext/userContext";
+import Loading from '../../components/Loading';
+import RecordingsList from '../../components/RecordingsList';
+import EmptyRecordingList from '../../components/EmptyRecordingList';
+import { Context as RecordingContext } from '../../context/recordingContext/recordingContext';
+import { Context as UserContext } from '../../context/userContext/userContext';
 
 function RecordingsListScreen({ type, userId }) {
   const {
     setCurrentPlayback,
     fetchRecordingsList,
     updatePlaybackSeconds,
-    state: { recordings, playback, loading }
+    state: { recordings, playback, loading },
   } = useContext(RecordingContext);
   //prettier-ignore
-  const { getUserDataById, state: { pressedUserData } } = useContext(UserContext);
+  const { getUserDataById, resetPressedUserState, state, state: { pressedUserData } } = useContext(UserContext);
 
   useEffect(() => {
-    type === "profile" ? getUserDataById(userId) : fetchRecordingsList();
+    type === 'profile' ? getUserDataById(userId) : fetchRecordingsList();
+    return () => resetPressedUserState();
   }, [userId]);
 
   useEffect(() => {
@@ -60,15 +61,15 @@ function RecordingsListScreen({ type, userId }) {
   //This is passed down to the AudioCard component
   const onPlaybackPress = async key => {
     try {
-      const uri = await Storage.get(key, { level: "public" });
+      const uri = await Storage.get(key, { level: 'public' });
       const soundOptions = {
         shouldPlay: true,
         position: 0,
         duration: 1,
-        progressUpdateIntervalMillis: 100
+        progressUpdateIntervalMillis: 100,
       };
       const { sound } = await Audio.Sound.createAsync({ uri }, soundOptions);
-      console.log("Playing `onPlaybackPress` in RecordingListScreen index");
+
       setCurrentPlayback(sound, key);
     } catch (e) {
       console.log(e);
@@ -76,15 +77,15 @@ function RecordingsListScreen({ type, userId }) {
   };
 
   return loading ? (
-    <View style={styles.centerScreen}>
-      <Loading />
-    </View>
+    <Loading />
   ) : recordings.length ? (
     <View style={styles.listContainer}>
       <RecordingsList
+        //change state.loading to something more meaningful
+        isLoading={type === 'profile' ? state.loading : loading}
         onPlaybackPress={onPlaybackPress}
         recordings={
-          type === "profile"
+          type === 'profile'
             ? pressedUserData && pressedUserData.recordings.items
             : recordings
         }
@@ -99,16 +100,16 @@ function RecordingsListScreen({ type, userId }) {
 }
 
 RecordingsListScreen.navigationOptions = {
-  title: "Recordings"
+  title: 'Recordings',
 };
 const styles = StyleSheet.create({
   listContainer: {
-    flex: 1
+    flex: 1,
   },
   centerScreen: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
-  }
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
 export default RecordingsListScreen;

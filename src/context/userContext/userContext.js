@@ -1,51 +1,57 @@
-import createContext from "../createContext";
-import { API, graphqlOperation } from "aws-amplify";
-import { getUser } from "../../graphql/queries";
+import createContext from '../createContext';
+import { API, graphqlOperation } from 'aws-amplify';
+import { getUser } from '../../graphql/queries';
 
 const initialState = {
   currentUser: null,
-  pressedUserId: "",
-  pressedUserData: null
+
+  pressedUserData: null,
+  loading: true,
 };
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "SET_CURRENT_USER_DATA":
+    case 'SET_USER_LOADING':
+      return { ...state, loading: action.bool };
+    case 'SET_CURRENT_USER_DATA':
       return {
         ...state,
-        currentUser: action.data
+        currentUser: action.data,
       };
-    case "SET_PRESSED_USER_ID":
+    case 'GET_USER_DATA_BY_ID':
       return {
         ...state,
-        pressedUserId: action.id
+        pressedUserData: action.data,
       };
-    case "GET_USER_DATA_BY_ID":
-      return {
-        ...state,
-        pressedUserData: action.data
-      };
-
+    case 'RESET_PRESSED_USER_STATE':
+      return { ...state, loading: true, pressedUserData: null };
     default:
       return state;
   }
 };
 
 const setCurrentUserData = dispatch => data => {
-  dispatch({ type: "SET_CURRENT_USER_DATA", data });
+  dispatch({ type: 'SET_CURRENT_USER_DATA', data });
 };
+
+const setLoading = bool => ({ type: 'SET_USER_LOADING', bool });
+const resetPressedUserState = dispatch => () =>
+  dispatch({ type: 'RESET_PRESSED_USER_STATE' });
 
 const getUserDataById = dispatch => async id => {
-  const res = await API.graphql(graphqlOperation(getUser, { id }));
-  dispatch({ type: "GET_USER_DATA_BY_ID", data: res.data.getUser });
-};
+  try {
+    setLoading(true);
+    const res = await API.graphql(graphqlOperation(getUser, { id }));
 
-const setPressedUserId = dispatch => id => {
-  dispatch({ type: "SET_PRESSED_USER_ID", id });
+    dispatch({ type: 'GET_USER_DATA_BY_ID', data: res.data.getUser });
+    dispatch(setLoading(false));
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 export const { Context, Provider } = createContext(
   userReducer,
-  { setCurrentUserData, getUserDataById, setPressedUserId },
+  { setCurrentUserData, getUserDataById, resetPressedUserState },
   initialState
 );
