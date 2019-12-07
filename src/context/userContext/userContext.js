@@ -6,13 +6,13 @@ const initialState = {
   currentUser: null,
 
   pressedUserData: null,
-  loading: true,
+  userLoading: true,
 };
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'SET_USER_LOADING':
-      return { ...state, loading: action.bool };
+      return { ...state, userLoading: action.bool };
     case 'SET_CURRENT_USER_DATA':
       return {
         ...state,
@@ -24,7 +24,7 @@ const userReducer = (state = initialState, action) => {
         pressedUserData: action.data,
       };
     case 'RESET_PRESSED_USER_STATE':
-      return { ...state, loading: true, pressedUserData: null };
+      return { ...state, userLoading: true, pressedUserData: null };
     default:
       return state;
   }
@@ -35,8 +35,7 @@ const setCurrentUserData = dispatch => data => {
 };
 
 const setLoading = bool => ({ type: 'SET_USER_LOADING', bool });
-const resetPressedUserState = dispatch => () =>
-  dispatch({ type: 'RESET_PRESSED_USER_STATE' });
+const resetPressedUserState = dispatch => () => dispatch({ type: 'RESET_PRESSED_USER_STATE' });
 
 const getUserDataById = dispatch => async id => {
   try {

@@ -3,24 +3,27 @@ import { View, StyleSheet, Dimensions } from 'react-native';
 import { Audio } from 'expo-av';
 import { Storage } from 'aws-amplify';
 
-import Loading from '../../components/Loading';
-import RecordingsList from '../../components/RecordingsList';
-import EmptyRecordingList from '../../components/EmptyRecordingList';
+import Loading from '../Loading';
+import RecordingsList from './RecordingsList';
+import EmptyRecordingList from '../EmptyRecordingList';
 import { Context as RecordingContext } from '../../context/recordingContext/recordingContext';
 import { Context as UserContext } from '../../context/userContext/userContext';
 
-function RecordingsListScreen({ type, userId }) {
+function RecordingsListScreen({ screenToShow, userId }) {
   const {
     setCurrentPlayback,
     fetchRecordingsList,
     updatePlaybackSeconds,
     state: { recordings, playback, loading },
   } = useContext(RecordingContext);
-  //prettier-ignore
-  const { getUserDataById, resetPressedUserState, state, state: { pressedUserData } } = useContext(UserContext);
+  const {
+    getUserDataById,
+    resetPressedUserState,
+    state: { pressedUserData, currentUser, userLoading },
+  } = useContext(UserContext);
 
   useEffect(() => {
-    type === 'profile' ? getUserDataById(userId) : fetchRecordingsList();
+    screenToShow === 'profile' ? getUserDataById(userId) : fetchRecordingsList();
     return () => resetPressedUserState();
   }, [userId]);
 
@@ -82,10 +85,10 @@ function RecordingsListScreen({ type, userId }) {
     <View style={styles.listContainer}>
       <RecordingsList
         //change state.loading to something more meaningful
-        isLoading={type === 'profile' ? state.loading : loading}
+        isLoading={screenToShow === 'profile' ? userLoading : loading}
         onPlaybackPress={onPlaybackPress}
         recordings={
-          type === 'profile'
+          screenToShow === 'profile'
             ? pressedUserData && pressedUserData.recordings.items
             : recordings
         }

@@ -2,9 +2,9 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 80401,
+  "packagerPid": 40081,
   "expoServerNgrokUrl": "https://ib-thm.anonymous.voce.exp.direct",
   "packagerNgrokUrl": "https://packager.ib-thm.anonymous.voce.exp.direct",
-  "ngrokPid": 80415,
+  "ngrokPid": 40092,
   "webpackServerPort": null
 }
