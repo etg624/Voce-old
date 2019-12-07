@@ -7,25 +7,13 @@ import Loading from '../Loading';
 import RecordingsList from './RecordingsList';
 import EmptyRecordingList from '../EmptyRecordingList';
 import { Context as RecordingContext } from '../../context/recordingContext/recordingContext';
-import { Context as UserContext } from '../../context/userContext/userContext';
 
-function RecordingsListScreen({ screenToShow, userId }) {
+function RecordingsListScreen({ recordings }) {
   const {
     setCurrentPlayback,
-    fetchRecordingsList,
     updatePlaybackSeconds,
-    state: { recordings, playback, loading },
+    state: { playback, loading },
   } = useContext(RecordingContext);
-  const {
-    getUserDataById,
-    resetPressedUserState,
-    state: { pressedUserData, currentUser, userLoading },
-  } = useContext(UserContext);
-
-  useEffect(() => {
-    screenToShow === 'profile' ? getUserDataById(userId) : fetchRecordingsList();
-    return () => resetPressedUserState();
-  }, [userId]);
 
   useEffect(() => {
     if (playback.sound) {
@@ -81,17 +69,11 @@ function RecordingsListScreen({ screenToShow, userId }) {
 
   return loading ? (
     <Loading />
-  ) : recordings.length ? (
+  ) : recordings && recordings.length ? (
     <View style={styles.listContainer}>
       <RecordingsList
-        //change state.loading to something more meaningful
-        isLoading={screenToShow === 'profile' ? userLoading : loading}
         onPlaybackPress={onPlaybackPress}
-        recordings={
-          screenToShow === 'profile'
-            ? pressedUserData && pressedUserData.recordings.items
-            : recordings
-        }
+        recordings={recordings}
         setCurrentPlayback={setCurrentPlayback}
       />
     </View>
@@ -102,9 +84,6 @@ function RecordingsListScreen({ screenToShow, userId }) {
   );
 }
 
-RecordingsListScreen.navigationOptions = {
-  title: 'Recordings',
-};
 const styles = StyleSheet.create({
   listContainer: {
     flex: 1,

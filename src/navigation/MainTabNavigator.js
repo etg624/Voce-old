@@ -4,7 +4,7 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 
 import TabBarIcon from '../components/TabBarIcon';
 import RecordingScreen from '../screens/RecordingScreen/index';
-import Feed from '../screens/FeedScreen';
+import FeedScreen from '../screens/FeedScreen';
 import ProfileScreen from '../screens/ProfileScreen/index';
 
 const config = Platform.select({
@@ -28,10 +28,11 @@ RecordStack.navigationOptions = {
 
 RecordStack.path = '';
 
-/*------Recordings List------*/
+/*------Feed------*/
 const FeedStack = createStackNavigator(
   {
-    Feed,
+    Feed: FeedScreen,
+    PressedUserProfile: { screen: props => <ProfileScreen {...props} profileType="pressedUser" /> },
   },
   config
 );
@@ -45,7 +46,17 @@ FeedStack.navigationOptions = {
 
 FeedStack.path = '';
 
-const ProfileStack = createStackNavigator({ Profile: ProfileScreen }, config);
+const ProfileStack = createStackNavigator(
+  {
+    Profile: {
+      screen: props => {
+        // console.log(props);
+        return <ProfileScreen {...props} profileType="currentUser" />;
+      },
+    },
+  },
+  config
+);
 
 ProfileStack.navigationOptions = {
   tabBarLabel: 'Profile',

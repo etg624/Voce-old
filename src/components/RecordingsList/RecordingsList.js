@@ -3,8 +3,8 @@ import { FlatList, ScrollView } from 'react-native';
 import { NavigationEvents } from 'react-navigation';
 
 import usePrevious from '../../hooks/usePrevious';
-import Loading from '../Loading';
 
+import Loading from '../Loading';
 import AudioCard from '../AudioCard';
 
 const RecordingsList = ({ onPlaybackPress, recordings, setCurrentPlayback, isLoading }) => {

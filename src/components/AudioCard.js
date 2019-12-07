@@ -36,13 +36,7 @@ const AudioCard = ({ item, navigation }) => {
           <TouchableOpacity
             style={styles.userImageContainer}
             onPress={() => {
-              navigation.navigate(
-                `${
-                  // need to make some sort of profile page for other users
-                  item.createdBy.id === currentUser.id ? 'Profile' : 'Profile'
-                }`,
-                { userId: item.createdBy.id }
-              );
+              navigation.navigate('PressedUserProfile', { userId: item.createdBy.id });
             }}
           >
             <Image source={require('../assets/images/speakingGuy.png')} />

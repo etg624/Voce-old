@@ -1,29 +1,26 @@
-import React, { useState, useContext, useEffect } from "react";
-import { Audio } from "expo-av";
-import * as Permissions from "expo-permissions";
-import { View, StyleSheet, Text } from "react-native";
-import { Storage, Auth } from "aws-amplify";
+import React, { useState, useContext, useEffect } from 'react';
+import { Audio } from 'expo-av';
+import * as Permissions from 'expo-permissions';
+import { View, StyleSheet, Text } from 'react-native';
+import { Storage, Auth } from 'aws-amplify';
 
-import config from "../../../aws-exports";
-import RecordButton from "../../components/RecordButton";
-import PlaybackForm from "../../components/PlaybackForm";
-import { Context as RecordingContext } from "../../context/recordingContext/recordingContext";
-import { Context as UserContext } from "../../context/userContext/userContext";
-const {
-  aws_user_files_s3_bucket_region: region,
-  aws_user_files_s3_bucket: bucket
-} = config;
+import config from '../../../aws-exports';
+import RecordButton from '../../components/RecordButton';
+import PlaybackForm from '../../components/PlaybackForm';
+import { Context as RecordingContext } from '../../context/recordingContext/recordingContext';
+import { Context as UserContext } from '../../context/userContext/userContext';
+const { aws_user_files_s3_bucket_region: region, aws_user_files_s3_bucket: bucket } = config;
 
 Auth.configure({
   identityPoolId: config.aws_cognito_identity_pool_id,
-  region: config.aws_cognito_region
+  region: config.aws_cognito_region,
 });
 
 Storage.configure({
   AWSS3: {
     bucket,
-    region
-  }
+    region,
+  },
 });
 
 export default function RecordingScreen({ navigation }) {
@@ -33,11 +30,11 @@ export default function RecordingScreen({ navigation }) {
     setRecording,
     setCurrentPlayback,
     postRecordingToS3AndDynamo,
-    state: { isRecording, recording, playback }
+    state: { isRecording, recording, playback },
   } = useContext(RecordingContext);
 
   const {
-    state: { currentUser }
+    state: { currentUser },
   } = useContext(UserContext);
 
   const audioModeOptions = {
@@ -47,13 +44,13 @@ export default function RecordingScreen({ navigation }) {
     shouldDuckAndroid: true,
     interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
     playThroughEarpieceAndroid: false,
-    staysActiveInBackground: true
+    staysActiveInBackground: true,
   };
 
   useEffect(() => {
     async function askForAudioPermissions() {
       const { status } = await Permissions.askAsync(Permissions.AUDIO_RECORDING);
-      setAudioPermissions(status === "granted");
+      setAudioPermissions(status === 'granted');
     }
 
     askForAudioPermissions();
@@ -67,15 +64,15 @@ export default function RecordingScreen({ navigation }) {
       await _recording.prepareToRecordAsync(
         (Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY = {
           android: {
-            extension: ".m4a",
+            extension: '.m4a',
             outputFormat: Audio.RECORDING_OPTION_ANDROID_OUTPUT_FORMAT_MPEG_4,
             audioEncoder: Audio.RECORDING_OPTION_ANDROID_AUDIO_ENCODER_DEFAULT,
             sampleRate: 44100,
             numberOfChannels: 2,
-            bitRate: 128000
+            bitRate: 128000,
           },
           ios: {
-            extension: ".m4a",
+            extension: '.m4a',
             outputFormat: Audio.RECORDING_OPTION_IOS_OUTPUT_FORMAT_MPEG4AAC,
             audioQuality: Audio.RECORDING_OPTION_IOS_AUDIO_QUALITY_MEDIUM,
             sampleRate: 44100,
@@ -83,8 +80,8 @@ export default function RecordingScreen({ navigation }) {
             bitRate: 96400,
             linearPCMBitDepth: 16,
             linearPCMIsBigEndian: false,
-            linearPCMIsFloat: false
-          }
+            linearPCMIsFloat: false,
+          },
         })
       );
 
@@ -99,14 +96,14 @@ export default function RecordingScreen({ navigation }) {
   const stopRecording = async () => {
     await Audio.setAudioModeAsync({
       ...audioModeOptions,
-      allowsRecordingIOS: false
+      allowsRecordingIOS: false,
     });
 
     await recording.stopAndUnloadAsync();
     const { sound } = await recording.createNewLoadedSoundAsync({
       isLooping: false,
       isMuted: false,
-      volume: 1
+      volume: 1,
     });
 
     setCurrentPlayback(sound);
@@ -116,7 +113,7 @@ export default function RecordingScreen({ navigation }) {
   const startRecordedPlayBack = async () => {
     await Audio.setAudioModeAsync({
       ...audioModeOptions,
-      allowsRecordingIOS: false
+      allowsRecordingIOS: false,
     });
     try {
       (await playback.sound.playAsync()) || (await playback.sound.replayAsync());
@@ -127,7 +124,7 @@ export default function RecordingScreen({ navigation }) {
 
   const saveAndUnloadRecordedPlayback = async title => {
     setCurrentPlayback(null);
-    navigation.navigate("RecordingsList");
+    navigation.navigate('Feed');
     await postRecordingToS3AndDynamo(title, recording, currentUser.id);
     await playback.sound.unloadAsync();
   };
@@ -137,7 +134,7 @@ export default function RecordingScreen({ navigation }) {
       style={
         !playback.sound
           ? styles.mainContainer
-          : { ...styles.mainContainer, justifyContent: "center" }
+          : { ...styles.mainContainer, justifyContent: 'center' }
       }
     >
       {playback.sound ? (
@@ -150,9 +147,7 @@ export default function RecordingScreen({ navigation }) {
       ) : (
         <>
           <View style={styles.recordingStatus}>
-            <Text style={styles.recordingStatusText}>
-              {isRecording ? "Recording" : "Record"}
-            </Text>
+            <Text style={styles.recordingStatusText}>{isRecording ? 'Recording' : 'Record'}</Text>
           </View>
           <View style={styles.recordingButton}>
             <RecordButton
@@ -169,25 +164,25 @@ export default function RecordingScreen({ navigation }) {
 }
 
 RecordingScreen.navigationOptions = {
-  title: "Record"
+  title: 'Record',
 };
 
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    justifyContent: "flex-end"
+    justifyContent: 'flex-end',
   },
   recordingButton: {
     marginBottom: 80,
-    alignSelf: "center"
+    alignSelf: 'center',
   },
   recordingStatus: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   recordingStatusText: {
-    fontSize: 60
+    fontSize: 60,
   },
-  form: {}
+  form: {},
 });
