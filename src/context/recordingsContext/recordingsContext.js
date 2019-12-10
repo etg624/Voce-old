@@ -49,7 +49,7 @@ const setLoading = bool => ({ type: 'SET_LOADING', bool });
 
 const postRecordingToS3AndDynamo = dispatch => {
   return async (title, recording, id) => {
-    // dispatch(setLoading(true));
+    dispatch(setLoading(true));
     const { key, localUri, extension } = await postRecordingToS3(title, recording, 'public');
     const file = {
       bucket,
@@ -78,6 +78,7 @@ const postRecordingToS3AndDynamo = dispatch => {
 const fetchRecordingsListForFeed = dispatch => {
   return async () => {
     try {
+      dispatch(setLoading(true));
       const res = await API.graphql(graphqlOperation(listAudios));
 
       dispatch({
@@ -94,7 +95,7 @@ const fetchRecordingsListForFeed = dispatch => {
 
 const getUserRecordingsById = dispatch => async id => {
   try {
-    setLoading(true);
+    dispatch(setLoading(true));
     const res = await API.graphql(graphqlOperation(getUser, { id }));
 
     dispatch({ type: 'GET_USER_RECORDINGS_BY_ID', recordings: res.data.getUser.recordings.items });
@@ -112,7 +113,6 @@ const handleDeleteRecording = dispatch => {
       type: 'HANDLE_DELETE_RECORDING',
       recordingToDelete: res.data.deleteAudio,
     });
-    dispatch(setLoading(false));
   };
 };
 

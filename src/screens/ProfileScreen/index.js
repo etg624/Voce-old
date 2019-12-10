@@ -25,7 +25,6 @@ const ProfileScreen = ({ navigation, profileType, isFocused }) => {
       : profileType === 'currentUser'
       ? getUserRecordingsById(currentUser.id)
       : getUserRecordingsById(navigatedUserId);
-    console.log(profileType);
   }, [isFocused]);
 
   return (
