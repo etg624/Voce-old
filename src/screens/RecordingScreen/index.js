@@ -5,8 +5,8 @@ import { View, StyleSheet, Text } from 'react-native';
 import { Storage, Auth } from 'aws-amplify';
 
 import config from '../../../aws-exports';
-import RecordButton from '../../components/RecordButton';
-import PlaybackForm from '../../components/PlaybackForm';
+import RecordButton from '../../components/recordButton';
+import PlaybackForm from '../../components/playbackForm';
 import { Context as RecordingContext } from '../../context/recordingContext/recordingContext';
 import { Context as UserContext } from '../../context/userContext/userContext';
 const { aws_user_files_s3_bucket_region: region, aws_user_files_s3_bucket: bucket } = config;

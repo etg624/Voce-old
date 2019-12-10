@@ -3,9 +3,9 @@ import { View, StyleSheet, Dimensions } from 'react-native';
 import { Audio } from 'expo-av';
 import { Storage } from 'aws-amplify';
 
-import Loading from '../Loading';
-import RecordingsList from './RecordingsList';
-import EmptyRecordingList from '../EmptyRecordingList';
+import Loading from '../loading';
+import RecordingsList from './recordingsList';
+import EmptyRecordingList from '../emptyRecordingList';
 import { Context as RecordingContext } from '../../context/recordingContext/recordingContext';
 
 function RecordingsListScreen({ recordings }) {

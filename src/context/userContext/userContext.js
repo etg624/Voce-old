@@ -14,7 +14,6 @@ const userReducer = (state = initialState, action) => {
     case 'SET_USER_LOADING':
       return { ...state, userLoading: action.bool };
     case 'SET_CURRENT_USER_DATA':
-      console.log(action.data);
       return {
         ...state,
         currentUser: {
@@ -28,6 +27,7 @@ const userReducer = (state = initialState, action) => {
         ...state,
 
         currentUser: {
+          ...state.currentUser,
           recordings: state.currentUser.recordings.filter(
             recording => recording.id !== action.recordingToDelete.id
           ),
@@ -40,7 +40,8 @@ const userReducer = (state = initialState, action) => {
         pressedUserData: action.data,
       };
     case 'RESET_PRESSED_USER_STATE':
-      return { ...state, userLoading: true, pressedUserData: null };
+      console.log(state);
+      return { ...state, pressedUserData: null };
     default:
       return state;
   }
@@ -68,6 +69,7 @@ const getUserDataById = dispatch => async id => {
 const handleDeleteRecording = dispatch => {
   return async id => {
     const res = await API.graphql(graphqlOperation(deleteAudio, { input: { id } }));
+
     dispatch({
       type: 'HANDLE_DELETE_RECORDING',
       recordingToDelete: res.data.deleteAudio,

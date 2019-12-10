@@ -20,16 +20,16 @@ Amplify.configure({
   Storage: {
     AWSS3: {
       bucket: config.aws_user_files_s3_bucket, //REQUIRED -  Amazon S3 bucket
-      region: config.aws_user_files_s3_bucket_region //OPTIONAL -  Amazon service region
-    }
+      region: config.aws_user_files_s3_bucket_region, //OPTIONAL -  Amazon service region
+    },
   },
-  Analytics: { disabled: true }
+  Analytics: { disabled: true },
 });
 
 function App(props) {
   const {
     setCurrentUserData,
-    state: { currentUser }
+    state: { currentUser },
   } = useContext(UserContext);
 
   const [isLoadingComplete, setLoadingComplete] = useState(false);
@@ -38,9 +38,7 @@ function App(props) {
     _findOrCreateUser();
   }, []);
   const _createUser = async _username => {
-    return await API.graphql(
-      graphqlOperation(createUser, { input: { username: _username } })
-    );
+    return await API.graphql(graphqlOperation(createUser, { input: { username: _username } }));
   };
 
   const _findOrCreateUser = async () => {
@@ -49,65 +47,30 @@ function App(props) {
 
     const {
       data: {
-        listUsers: { items }
-      }
+        listUsers: { items },
+      },
     } = await API.graphql(graphqlOperation(listUsers, filterByUsername));
 
     if (!items.length) {
-      _createUser(username).then(res =>
-        setCurrentUserData(res.data.createUser)
-      );
+      _createUser(username).then(res => setCurrentUserData(res.data.createUser));
     } else {
       setCurrentUserData(items[0]);
     }
   };
 
-  if (!isLoadingComplete && !props.skipLoadingScreen) {
-    return (
-      <AppLoading
-        startAsync={loadResourcesAsync}
-        onError={handleLoadingError}
-        onFinish={() => handleFinishLoading(setLoadingComplete)}
-      />
-    );
-  } else {
-    return (
-      <View style={styles.container}>
-        {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-        <AppNavigator />
-      </View>
-    );
-  }
-}
-
-async function loadResourcesAsync() {
-  await Promise.all([
-    Font.loadAsync({
-      // This is the font that we are using for our tab bar
-      ...Ionicons.font,
-      ...MaterialIcons.font,
-      // We include SpaceMono because we use it in HomeScreen.js. Feel free to
-      // remove this if you are not using it in your app
-      'space-mono': require('./src/assets/fonts/SpaceMono-Regular.ttf')
-    })
-  ]);
-}
-
-function handleLoadingError(error) {
-  // In this case, you might want to report the error to your error reporting
-  // service, for example Sentry
-  console.warn(error);
-}
-
-function handleFinishLoading(setLoadingComplete) {
-  setLoadingComplete(true);
+  return (
+    <View style={styles.container}>
+      {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+      <AppNavigator />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff'
-  }
+    backgroundColor: '#fff',
+  },
 });
 
 export default withAuthenticator(

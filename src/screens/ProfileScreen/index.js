@@ -5,15 +5,20 @@ import RecordingListScreen from '../../components/RecordingsList/index';
 import { Context as UserContext } from '../../context/userContext/userContext';
 
 const ProfileScreen = ({ navigation, profileType }) => {
-  //prettier-ignore
-  const {getUserDataById ,state: { currentUser, pressedUserData } } = useContext(UserContext);
+  const {
+    getUserDataById,
+    resetPressedUserState,
+    state: { currentUser, pressedUserData, userLoading },
+  } = useContext(UserContext);
   const navigatedUserId = navigation.getParam('userId');
-  // console.log(pressedUserData);
+
   useEffect(() => {
     profileType === 'currentUser'
       ? getUserDataById(currentUser.id)
       : getUserDataById(navigatedUserId);
+    return () => resetPressedUserState();
   }, [profileType]);
+
   return (
     <>
       <View>
@@ -21,6 +26,7 @@ const ProfileScreen = ({ navigation, profileType }) => {
       </View>
       <RecordingListScreen
         screenToShow="profile"
+        isLoading={userLoading}
         recordings={
           profileType === 'currentUser'
             ? currentUser.recordings

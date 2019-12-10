@@ -1,11 +1,9 @@
-type Audio
-  @model
-  @auth(rules: [{ allow: owner, operations: [create, update, delete] }]) {
+type Audio @model @auth(rules: [{ allow: owner, operations: [create, update, delete] }]) {
   id: ID!
   title: String!
   durationInMillis: Int!
   file: S3Object
-  createdBy: User @connection(name: "UserRecordings")
+  createdBy: User! @connection(name: "UserRecordings")
 }
 
 input CreateAudioInput {
