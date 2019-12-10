@@ -40,7 +40,6 @@ const userReducer = (state = initialState, action) => {
         pressedUserData: action.data,
       };
     case 'RESET_PRESSED_USER_STATE':
-      console.log(state);
       return { ...state, pressedUserData: null };
     default:
       return state;

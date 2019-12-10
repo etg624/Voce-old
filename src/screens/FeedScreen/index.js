@@ -4,14 +4,14 @@ import { Context as RecordingContext } from '../../context/recordingContext/reco
 const Feed = ({ navigation }) => {
   const {
     fetchRecordingsList,
-    state: { recordings, loading },
+    state: { recordings },
   } = useContext(RecordingContext);
   useEffect(() => {
     fetchRecordingsList();
   }, []);
   return (
     <>
-      <RecordingListScreen screenToShow="feed" recordings={recordings} isLoading={loading} />
+      <RecordingListScreen screenToShow="feed" recordings={recordings} />
     </>
   );
 };

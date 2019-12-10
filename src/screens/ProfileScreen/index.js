@@ -8,7 +8,7 @@ const ProfileScreen = ({ navigation, profileType }) => {
   const {
     getUserDataById,
     resetPressedUserState,
-    state: { currentUser, pressedUserData, userLoading },
+    state: { currentUser, pressedUserData },
   } = useContext(UserContext);
   const navigatedUserId = navigation.getParam('userId');
 
@@ -26,7 +26,6 @@ const ProfileScreen = ({ navigation, profileType }) => {
       </View>
       <RecordingListScreen
         screenToShow="profile"
-        isLoading={userLoading}
         recordings={
           profileType === 'currentUser'
             ? currentUser.recordings
