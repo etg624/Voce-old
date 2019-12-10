@@ -1,17 +1,19 @@
 import React, { useEffect, useContext } from 'react';
-import RecordingListScreen from '../../components/RecordingsList/index';
-import { Context as RecordingContext } from '../../context/recordingContext/recordingContext';
-const Feed = ({ navigation }) => {
+import { withNavigationFocus } from 'react-navigation';
+import RecordingListScreen from '../../components/recordingsList/index';
+import { Context as RecordingsContext } from '../../context/recordingsContext/recordingsContext';
+const Feed = ({ isFocused }) => {
   const {
-    fetchRecordingsList,
-    state: { recordings },
-  } = useContext(RecordingContext);
+    fetchRecordingsListForFeed,
+    state: { recordings, loading },
+  } = useContext(RecordingsContext);
   useEffect(() => {
-    fetchRecordingsList();
-  }, []);
+    isFocused ? fetchRecordingsListForFeed() : null;
+  }, [isFocused]);
+
   return (
     <>
-      <RecordingListScreen screenToShow="feed" recordings={recordings} />
+      <RecordingListScreen screenToShow="feed" isLoading={loading} />
     </>
   );
 };
@@ -20,4 +22,4 @@ Feed.navigationOptions = {
   title: 'Feed',
 };
 
-export default Feed;
+export default withNavigationFocus(Feed);

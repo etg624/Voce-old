@@ -1,23 +1,14 @@
-import { API, graphqlOperation } from 'aws-amplify';
-
-import config from '../../../aws-exports';
-import { listAudios } from '../../graphql/queries';
-
 import createContext from '../createContext';
-import { postRecordingToDynamo, postRecordingToS3 } from './helpers/index';
 
 const initialState = {
   playback: { sound: null, seconds: 0, key: '' },
   seconds: 0,
   isRecording: false,
   recording: null,
-  recordings: [],
   loading: true,
 };
 
-const { aws_user_files_s3_bucket_region: region, aws_user_files_s3_bucket: bucket } = config;
-
-const recordingReducer = (state = initialState, action) => {
+const audioReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'UPDATE_PLAYBACK_SECONDS':
       return {
@@ -38,17 +29,6 @@ const recordingReducer = (state = initialState, action) => {
         ...state,
         playback: { ...state.playback, sound: action.sound, key: action.key },
       };
-    case 'POST_RECORDING_TO_S3_AND_DYNAMO':
-      return {
-        ...state,
-        recordings: [action.recording, ...state.recordings],
-      };
-    case 'FETCH_RECORDING_LIST':
-      return {
-        ...state,
-        recordings: [...action.recordings],
-      };
-
     default:
       return state;
   }
@@ -64,60 +44,12 @@ const setRecording = dispatch => recording => dispatch({ type: 'SET_RECORDING', 
 const setCurrentPlayback = dispatch => (sound, key) =>
   dispatch({ type: 'SET_CURRENT_PLAYBACK', sound, key });
 
-//this is to be used with other action creators that have dispatch attached to them
-const setLoading = bool => ({ type: 'SET_LOADING', bool });
-
-const postRecordingToS3AndDynamo = dispatch => {
-  return async (title, recording, id) => {
-    // dispatch(setLoading(true));
-    const { key, localUri, extension } = await postRecordingToS3(title, recording, 'public');
-    const file = {
-      bucket,
-      region,
-      localUri,
-      key,
-      mimeType: `audio/x-${extension}`,
-    };
-
-    const audioDetails = {
-      title,
-      audioCreatedById: id,
-      durationInMillis: recording._finalDurationMillis,
-      file,
-    };
-    const { data } = await postRecordingToDynamo(audioDetails);
-    dispatch({
-      type: 'POST_RECORDING_TO_S3_AND_DYNAMO',
-      recording: data.createAudio,
-    });
-
-    dispatch(setLoading(false));
-  };
-};
-
-const fetchRecordingsList = dispatch => {
-  return async () => {
-    try {
-      const res = await API.graphql(graphqlOperation(listAudios));
-      dispatch({
-        type: 'FETCH_RECORDING_LIST',
-        recordings: res.data.listAudios.items,
-      });
-      dispatch(setLoading(false));
-    } catch (e) {
-      console.log(e);
-    }
-  };
-};
-
 export const { Context, Provider } = createContext(
-  recordingReducer,
+  audioReducer,
   {
     setIsRecording,
     setRecording,
     setCurrentPlayback,
-    postRecordingToS3AndDynamo,
-    fetchRecordingsList,
     updatePlaybackSeconds,
   },
   initialState

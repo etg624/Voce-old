@@ -1,19 +1,18 @@
-import { AppLoading } from 'expo';
-
-import * as Font from 'expo-font';
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
-import { Ionicons, MaterialIcons } from '@expo/vector-icons';
-import AppNavigator from './src/navigation/AppNavigator';
-import config from './aws-exports';
-
-import { Context as UserContext } from './src/context/userContext/userContext';
-import { Provider as RecordingProvider } from './src/context/recordingContext/recordingContext';
-import { Provider as UserProvider } from './src/context/userContext/userContext';
-import { createUser } from './src/graphql/mutations';
-import { listUsers, getUser } from './src/graphql/queries';
 import { withAuthenticator } from 'aws-amplify-react-native';
 import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify';
+
+import AppNavigator from './src/navigation/AppNavigator';
+import config from './aws-exports';
+import { createUser } from './src/graphql/mutations';
+import { listUsers } from './src/graphql/queries';
+
+import { Context as UserContext } from './src/context/userContext/userContext';
+
+import { Provider as RecordingProvider } from './src/context/recordingsContext/recordingsContext';
+import { Provider as UserProvider } from './src/context/userContext/userContext';
+import { Provider as AudioProvider } from './src/context/audioContext/audioContext';
 
 Amplify.configure({
   ...config,
@@ -27,12 +26,7 @@ Amplify.configure({
 });
 
 function App(props) {
-  const {
-    setCurrentUserData,
-    state: { currentUser },
-  } = useContext(UserContext);
-
-  const [isLoadingComplete, setLoadingComplete] = useState(false);
+  const { setCurrentUserData } = useContext(UserContext);
 
   useEffect(() => {
     _findOrCreateUser();
@@ -76,9 +70,11 @@ const styles = StyleSheet.create({
 export default withAuthenticator(
   () => (
     <UserProvider>
-      <RecordingProvider>
-        <App />
-      </RecordingProvider>
+      <AudioProvider>
+        <RecordingProvider>
+          <App />
+        </RecordingProvider>
+      </AudioProvider>
     </UserProvider>
   ),
   true

@@ -6,14 +6,17 @@ import { Storage } from 'aws-amplify';
 import Loading from '../loading';
 import RecordingsList from './recordingsList';
 import EmptyRecordingList from '../emptyRecordingList';
-import { Context as RecordingContext } from '../../context/recordingContext/recordingContext';
+import { Context as RecordingsContext } from '../../context/recordingsContext/recordingsContext';
+import { Context as AudioContext } from '../../context/audioContext/audioContext';
 
-function RecordingsListScreen({ recordings }) {
+const RecordingsListScreen = ({ isLoading }) => {
   const {
     setCurrentPlayback,
     updatePlaybackSeconds,
-    state: { playback, loading },
-  } = useContext(RecordingContext);
+    state: { playback },
+  } = useContext(AudioContext);
+  //prettier-ignore
+  const { state: { loading, recordings } } = useContext(RecordingsContext);
 
   useEffect(() => {
     if (playback.sound) {
@@ -75,6 +78,7 @@ function RecordingsListScreen({ recordings }) {
         onPlaybackPress={onPlaybackPress}
         recordings={recordings}
         setCurrentPlayback={setCurrentPlayback}
+        isLoading={isLoading}
       />
     </View>
   ) : (
@@ -82,7 +86,7 @@ function RecordingsListScreen({ recordings }) {
       <EmptyRecordingList />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   listContainer: {

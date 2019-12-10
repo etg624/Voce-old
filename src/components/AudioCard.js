@@ -2,21 +2,22 @@ import React, { useContext, useState } from 'react';
 import { View, Image, Text, StyleSheet, TouchableHighlight, TouchableOpacity } from 'react-native';
 
 import { withNavigation } from 'react-navigation';
-import { Context as RecordingContext } from '../context/recordingContext/recordingContext';
+import { Context as RecordingsContext } from '../context/recordingsContext/recordingsContext';
+import { Context as AudioContext } from '../context/audioContext/audioContext';
 import { Context as UserContext } from '../context/userContext/userContext';
-import AudioProgressBar from './AudioProgressBar';
-import AudioProgressSeconds from './AudioProgressSeconds';
-import EllipsisModal from './EllipsisModal';
+import AudioProgressBar from './audioProgressBar';
+import AudioProgressSeconds from './audioProgressSeconds';
+import EllipsisModal from './ellipsisModal';
 
 const AudioCard = ({ item, navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   //prettier-ignore
   const {
     state: { playback, playback: { seconds }}
-  } = useContext(RecordingContext);
+  } = useContext(AudioContext);
   //prettier-ignore
-  const {handleDeleteRecording, state: { currentUser } } = useContext(UserContext);
-
+  const { state: { currentUser } } = useContext(UserContext);
+  const { handleDeleteRecording } = useContext(RecordingsContext);
   const durationInSeconds = Math.round(item.durationInMillis / 1000);
   const progressPercentage = 100 * (seconds / durationInSeconds);
   const shouldShowAudioProgressUpdate = playback.key === item.file.key;

@@ -7,7 +7,8 @@ import { Storage, Auth } from 'aws-amplify';
 import config from '../../../aws-exports';
 import RecordButton from '../../components/recordButton';
 import PlaybackForm from '../../components/playbackForm';
-import { Context as RecordingContext } from '../../context/recordingContext/recordingContext';
+import { Context as AudioContext } from '../../context/audioContext/audioContext';
+import { Context as RecordingsContext } from '../../context/recordingsContext/recordingsContext';
 import { Context as UserContext } from '../../context/userContext/userContext';
 const { aws_user_files_s3_bucket_region: region, aws_user_files_s3_bucket: bucket } = config;
 
@@ -29,9 +30,9 @@ export default function RecordingScreen({ navigation }) {
     setIsRecording,
     setRecording,
     setCurrentPlayback,
-    postRecordingToS3AndDynamo,
     state: { isRecording, recording, playback },
-  } = useContext(RecordingContext);
+  } = useContext(AudioContext);
+  const { postRecordingToS3AndDynamo } = useContext(RecordingsContext);
 
   const {
     state: { currentUser },
