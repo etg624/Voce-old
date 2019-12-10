@@ -12,11 +12,10 @@ const AudioCard = ({ item, navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   //prettier-ignore
   const {
-    handleDeleteRecording,
     state: { playback, playback: { seconds }}
   } = useContext(RecordingContext);
   //prettier-ignore
-  const { state: { currentUser } } = useContext(UserContext);
+  const {handleDeleteRecording, state: { currentUser } } = useContext(UserContext);
 
   const durationInSeconds = Math.round(item.durationInMillis / 1000);
   const progressPercentage = 100 * (seconds / durationInSeconds);

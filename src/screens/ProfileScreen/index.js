@@ -23,7 +23,7 @@ const ProfileScreen = ({ navigation, profileType }) => {
         screenToShow="profile"
         recordings={
           profileType === 'currentUser'
-            ? currentUser.recordings.items
+            ? currentUser.recordings
             : pressedUserData && pressedUserData.recordings.items
         }
       />
