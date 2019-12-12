@@ -4,6 +4,12 @@ type Audio @model @auth(rules: [{ allow: owner, operations: [create, update, del
   durationInMillis: Int!
   file: S3Object
   createdBy: User! @connection(name: "UserRecordings")
+  likes: [Like] @connection(name: "RecordingLikes")
+}
+
+type Like @model {
+  recording: Audio @connection(name: "RecordingLikes")
+  likedBy: [User]
 }
 
 input CreateAudioInput {
@@ -14,14 +20,14 @@ input CreateAudioInput {
 }
 
 type User @model {
-  id: ID!
-  username: String!
+  id: ID
+  username: String
   recordings: [Audio] @connection(name: "UserRecordings")
 }
 
 input CreateUserInput {
   id: ID
-  username: String!
+  username: String
 }
 
 type S3Object {

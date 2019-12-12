@@ -4,10 +4,9 @@ import { NavigationEvents } from 'react-navigation';
 
 import usePrevious from '../../hooks/usePrevious';
 
-import Loading from '../loading';
 import AudioCard from '../audioCard';
 
-const RecordingsList = ({ onPlaybackPress, recordings, setCurrentPlayback, isLoading }) => {
+const RecordingsList = ({ startPlayback, recordings, setCurrentPlayback }) => {
   const [yState, setYState] = useState(0);
   const prevYState = usePrevious(yState);
 
@@ -23,13 +22,11 @@ const RecordingsList = ({ onPlaybackPress, recordings, setCurrentPlayback, isLoa
 
     if (currentIndex >= 0 && currentIndex !== prevIndex) {
       console.log(`Playing ${recordings[currentIndex].title} in RecordingListScreen index`);
-      onPlaybackPress(recordings[currentIndex].file.key);
+      startPlayback(recordings[currentIndex].file.key);
     }
   };
 
-  return isLoading ? (
-    <Loading />
-  ) : (
+  return (
     <ScrollView scrollEventThrottle={1000} onScroll={handlePlayRecordingOnScroll}>
       <NavigationEvents
         onDidBlur={() => {

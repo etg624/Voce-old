@@ -66,6 +66,7 @@ const postRecordingToS3AndDynamo = dispatch => {
       file,
     };
     const { data } = await postRecordingToDynamo(audioDetails);
+    console.log(data);
     dispatch({
       type: 'POST_RECORDING_TO_S3_AND_DYNAMO',
       recording: data.createAudio,
@@ -80,7 +81,7 @@ const fetchRecordingsListForFeed = dispatch => {
     try {
       dispatch(setLoading(true));
       const res = await API.graphql(graphqlOperation(listAudios));
-
+      console.log(res.data.listAudios.items);
       dispatch({
         type: 'FETCH_RECORDING_LIST_FOR_FEED',
         recordings: res.data.listAudios.items,

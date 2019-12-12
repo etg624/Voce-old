@@ -4,7 +4,7 @@ import { Audio } from 'expo-av';
 import { Storage } from 'aws-amplify';
 
 import Loading from '../loading';
-import RecordingsList from './recordingsList';
+import Recordings from './recordings';
 import EmptyRecordingList from '../emptyRecordingList';
 import { Context as RecordingsContext } from '../../context/recordingsContext/recordingsContext';
 import { Context as AudioContext } from '../../context/audioContext/audioContext';
@@ -16,7 +16,7 @@ const RecordingsListScreen = ({ isLoading }) => {
     state: { playback },
   } = useContext(AudioContext);
   //prettier-ignore
-  const { state: { loading, recordings } } = useContext(RecordingsContext);
+  const { state: { recordings } } = useContext(RecordingsContext);
 
   useEffect(() => {
     if (playback.sound) {
@@ -52,8 +52,8 @@ const RecordingsListScreen = ({ isLoading }) => {
       }
     }
   };
-  //This is passed down to the AudioCard component
-  const onPlaybackPress = async key => {
+
+  const startPlayback = async key => {
     try {
       const uri = await Storage.get(key, { level: 'public' });
       const soundOptions = {
@@ -70,15 +70,14 @@ const RecordingsListScreen = ({ isLoading }) => {
     }
   };
 
-  return loading ? (
+  return isLoading ? (
     <Loading />
   ) : recordings && recordings.length ? (
     <View style={styles.listContainer}>
-      <RecordingsList
-        onPlaybackPress={onPlaybackPress}
+      <Recordings
+        startPlayback={startPlayback}
         recordings={recordings}
         setCurrentPlayback={setCurrentPlayback}
-        isLoading={isLoading}
       />
     </View>
   ) : (

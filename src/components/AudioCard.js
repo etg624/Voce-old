@@ -6,6 +6,7 @@ import { Context as RecordingsContext } from '../context/recordingsContext/recor
 import { Context as AudioContext } from '../context/audioContext/audioContext';
 import { Context as UserContext } from '../context/userContext/userContext';
 import AudioProgressBar from './audioProgressBar';
+import Likes from './likes';
 import AudioProgressSeconds from './audioProgressSeconds';
 import EllipsisModal from './ellipsisModal';
 
@@ -77,6 +78,12 @@ const AudioCard = ({ item, navigation }) => {
             shouldShowAudioProgressUpdate={shouldShowAudioProgressUpdate}
           />
         </View>
+        <View style={styles.social}>
+          <Likes />
+          <Likes />
+          <Likes />
+          <Likes />
+        </View>
       </View>
     </View>
   );
@@ -102,7 +109,10 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     elevation: 5,
   },
-
+  social: {
+    width: '100%',
+    flexDirection: 'row',
+  },
   userImageContainer: {
     backgroundColor: 'rgba(0,0,0, 0.6)',
     borderRadius: 4,
