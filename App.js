@@ -2,8 +2,11 @@ import React, { useContext, useEffect } from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { withAuthenticator } from 'aws-amplify-react-native';
 import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify';
-
+import { StreamApp } from 'expo-activity-feed';
+import stream from 'getstream';
 import AppNavigator from './src/navigation/AppNavigator';
+import { STREAM_API_KEY, STREAM_APP_ID, STREAM_API_SECRET } from './config';
+
 import config from './aws-exports';
 import { createUser } from './src/graphql/mutations';
 import { listUsers } from './src/graphql/queries';
@@ -26,7 +29,10 @@ Amplify.configure({
 });
 
 function App(props) {
-  const { setCurrentUserData } = useContext(UserContext);
+  const {
+    setCurrentUserData,
+    state: { currentUser },
+  } = useContext(UserContext);
 
   useEffect(() => {
     _findOrCreateUser();
@@ -53,10 +59,16 @@ function App(props) {
   };
 
   return (
+    // <StreamApp
+    //   apiKey={STREAM_API_KEY}
+    //   appId={STREAM_APP_ID}
+    //   userId={stream.connect(STREAM_API_KEY, null, STREAM_APP_ID)}
+    // >
     <View style={styles.container}>
       {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
       <AppNavigator />
     </View>
+    // </StreamApp>
   );
 }
 
