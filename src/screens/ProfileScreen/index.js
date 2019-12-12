@@ -10,7 +10,7 @@ const ProfileScreen = ({ navigation, profileType, isFocused }) => {
   const {
     state: { currentUser },
   } = useContext(UserContext);
-  console.log(currentUser);
+
   const {
     getUserRecordingsById,
     state: { loading },
