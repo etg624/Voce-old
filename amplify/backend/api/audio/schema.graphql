@@ -9,7 +9,7 @@ type Audio @model @auth(rules: [{ allow: owner, operations: [create, update, del
 
 type Like @model {
   recording: Audio @connection(name: "RecordingLikes")
-  likedBy: [User]
+  likedBy: [User]!
 }
 
 input CreateAudioInput {
