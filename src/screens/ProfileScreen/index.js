@@ -2,7 +2,8 @@ import React, { useContext, useEffect } from 'react';
 import { View, Text } from 'react-native';
 import { withNavigationFocus } from 'react-navigation';
 
-import RecordingList from '../../components/recordingsList/index';
+import Loading from '../../components/loading';
+import RecordingListScreen from '../../components/recordingsList/index';
 import { Context as UserContext } from '../../context/userContext/userContext';
 import { Context as RecordingsContext } from '../../context/recordingsContext/recordingsContext';
 
@@ -10,10 +11,10 @@ const ProfileScreen = ({ navigation, profileType, isFocused }) => {
   const {
     state: { currentUser },
   } = useContext(UserContext);
-  console.log(currentUser);
+
   const {
     getUserRecordingsById,
-    state: { loading },
+    state: { recordings, loading },
   } = useContext(RecordingsContext);
 
   const navigatedUserId = navigation.getParam('userId');
@@ -31,7 +32,7 @@ const ProfileScreen = ({ navigation, profileType, isFocused }) => {
       <View>
         <Text>Profile Info Will Go Here</Text>
       </View>
-      <RecordingList screenToShow="profile" isLoading={loading} />
+      <RecordingListScreen screenToShow="profile" recordings={recordings} isLoading={loading} />
     </>
   );
 };
